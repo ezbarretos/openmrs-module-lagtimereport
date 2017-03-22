@@ -1,4 +1,4 @@
-${moduleName}
+Lag Time Report
 ==========================
 
 Description
