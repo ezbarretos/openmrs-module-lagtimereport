@@ -9,6 +9,11 @@
  */
 package org.openmrs.module.lagtimereport.api;
 
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -16,12 +21,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
-import org.openmrs.module.lagtimereport.Item;
-import org.openmrs.module.lagtimereport.api.dao.LagTimeReportDao;
-import org.openmrs.module.lagtimereport.api.impl.LagTimeReportServiceImpl;
-import static org.mockito.Mockito.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import org.openmrs.module.lagtimereport.LagTimeReportSetup;
+import org.openmrs.module.lagtimereport.api.dao.LagTimeReportSetupDao;
+import org.openmrs.module.lagtimereport.api.impl.LagTimeReportSetupServiceImpl;
 
 /**
  * This is a unit test, which verifies logic in LagTimeReportService. It doesn't extend
@@ -30,10 +32,10 @@ import static org.junit.Assert.*;
 public class LagTimeReportServiceTest {
 	
 	@InjectMocks
-	LagTimeReportServiceImpl basicModuleService;
+	LagTimeReportSetupServiceImpl basicModuleService;
 	
 	@Mock
-	LagTimeReportDao dao;
+	LagTimeReportSetupDao dao;
 	
 	@Mock
 	UserService userService;
@@ -46,18 +48,18 @@ public class LagTimeReportServiceTest {
 	@Test
 	public void saveItem_shouldSetOwnerIfNotSet() {
 		//Given
-		Item item = new Item();
+		LagTimeReportSetup item = new LagTimeReportSetup();
 		item.setDescription("some description");
 		
-		when(dao.saveItem(item)).thenReturn(item);
+		when(dao.saveLagTimeReportSetup(item)).thenReturn(item);
 		
 		User user = new User();
 		when(userService.getUser(1)).thenReturn(user);
 		
 		//When
-		basicModuleService.saveItem(item);
+		basicModuleService.saveLagTimeReportSetup(item);
 		
 		//Then
-		assertThat(item, hasProperty("owner", is(user)));
+		assertThat(item, hasProperty("creator", is(user)));
 	}
 }

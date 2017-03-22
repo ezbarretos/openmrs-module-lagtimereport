@@ -23,11 +23,11 @@
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-    <context:component-scan base-package="org.openmrs.module.lagtimereport" />
+    <context:component-scan base-package="org.openmrs.module.lagtimereport.api" />
 
     <!-- Wraps LagTimeReportService methods in DB transactions and OpenMRS interceptors,
     which set audit info like dateCreated, changedBy, etc.-->
-    <bean id="lagtimereport.LagTimeReportService"
+    <!-- <bean id="lagtimereport.LagTimeReportService"
             class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager">
             <ref bean="transactionManager" />
@@ -36,23 +36,23 @@
             <bean class="org.openmrs.module.lagtimereport.api.impl.LagTimeReportServiceImpl">
                 <property name="dao" ref="lagtimereport.LagTimeReportDao" />
             </bean>
-        </property>
+        </property> 
         <property name="preInterceptors">
             <ref bean="serviceInterceptors" />
         </property>
         <property name="transactionAttributeSource">
             <ref bean="transactionAttributeSource" />
         </property>
-    </bean>
+    </bean> -->
 
     <!-- Adds LagTimeReportService to OpenMRS context so it can be accessed
     calling Context.getService(LagTimeReportService.class) -->
-    <bean parent="serviceContext">
+    <!-- <bean parent="serviceContext">
         <property name="moduleService">
             <list>
                 <value>org.openmrs.module.lagtimereport.api.LagTimeReportService</value>
                 <ref bean="lagtimereport.LagTimeReportService" />
             </list>
         </property>
-    </bean>
+    </bean> -->
 </beans>

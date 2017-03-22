@@ -9,15 +9,17 @@
  */
 package org.openmrs.module.lagtimereport.api.dao;
 
-import org.junit.Test;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Ignore;
+import org.junit.Test;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.lagtimereport.Item;
+import org.openmrs.module.lagtimereport.LagTimeReportSetup;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 /**
  * It is an integration test (extends BaseModuleContextSensitiveTest), which verifies DAO methods
@@ -28,7 +30,7 @@ import static org.junit.Assert.*;
 public class LagTimeReportDaoTest extends BaseModuleContextSensitiveTest {
 	
 	@Autowired
-	LagTimeReportDao dao;
+	LagTimeReportSetupDao dao;
 	
 	@Autowired
 	UserService userService;
@@ -37,22 +39,22 @@ public class LagTimeReportDaoTest extends BaseModuleContextSensitiveTest {
 	@Ignore("Unignore if you want to make the Item class persistable, see also Item and liquibase.xml")
 	public void saveItem_shouldSaveAllPropertiesInDb() {
 		//Given
-		Item item = new Item();
+		LagTimeReportSetup item = new LagTimeReportSetup();
 		item.setDescription("some description");
-		item.setOwner(userService.getUser(1));
+		item.setCreator(userService.getUser(1));
 		
 		//When
-		dao.saveItem(item);
+		dao.saveLagTimeReportSetup(item);
 		
 		//Let's clean up the cache to be sure getItemByUuid fetches from DB and not from cache
 		Context.flushSession();
 		Context.clearSession();
 		
 		//Then
-		Item savedItem = dao.getItemByUuid(item.getUuid());
+		LagTimeReportSetup savedItem = dao.getLagTimeReportSetupByUuid(item.getUuid());
 		
 		assertThat(savedItem, hasProperty("uuid", is(item.getUuid())));
-		assertThat(savedItem, hasProperty("owner", is(item.getOwner())));
+		assertThat(savedItem, hasProperty("owner", is(item.getCreator())));
 		assertThat(savedItem, hasProperty("description", is(item.getDescription())));
 	}
 }

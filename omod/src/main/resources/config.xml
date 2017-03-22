@@ -29,6 +29,10 @@
 		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
 	</aware_of_modules>
 	
+	<!-- Maps hibernate file's, if present -->
+	<mappingFiles>
+		LagTimeReportSetup.hbm.xml
+	</mappingFiles>
 	
 	<!-- AOP
 	<advice>
@@ -99,6 +103,10 @@
 	<messages>
 		<lang>es</lang>
 		<file>messages_es.properties</file>
+	</messages>
+		<messages>
+		<lang>pt</lang>
+		<file>messages_pt.properties</file>
 	</messages>
 	<!-- /Internationalization -->
 	

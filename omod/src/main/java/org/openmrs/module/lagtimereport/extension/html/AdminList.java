@@ -9,7 +9,7 @@
  */
 package org.openmrs.module.lagtimereport.extension.html;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.openmrs.module.Extension;
@@ -17,7 +17,8 @@ import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 /**
  * This class defines the links that will appear on the administration page under the
- * "lagtimereport.title" heading. This extension is enabled by defining (uncommenting) it in the config.xml file.
+ * "lagtimereport.title" heading. This extension is enabled by defining (uncommenting) it in the
+ * config.xml file.
  */
 public class AdminList extends AdministrationSectionExt {
 	
@@ -40,9 +41,11 @@ public class AdminList extends AdministrationSectionExt {
 	 */
 	public Map<String, String> getLinks() {
 		
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new LinkedHashMap<String, String>();
 		
-		map.put("module/lagtimereport/lagtimereport.form", "lagtimereport.title");
+		map.put("module/lagtimereport/manageLagtimereport.list", "lagtimereport.manage.menu");
+		map.put("module/lagtimereport/setupLagtimereport.form", "lagtimereport.setup.menu");
+		map.put("module/lagtimereport/lagtimereport.list", "lagtimereport.title");
 		
 		return map;
 	}

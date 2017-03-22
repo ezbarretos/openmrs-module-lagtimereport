@@ -9,47 +9,55 @@
  */
 package org.openmrs.module.lagtimereport.web.controller;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.User;
-import org.openmrs.api.UserService;
+import org.openmrs.module.lagtimereport.LagTimeReportSetup;
+import org.openmrs.module.lagtimereport.api.LagTimeReportSetupService;
+import org.openmrs.module.lagtimereport.propertyeditor.LagTimeReportSetupEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
 
 /**
  * This class configured as controller using annotation and mapped with the URL of
  * 'module/${rootArtifactid}/${rootArtifactid}Link.form'.
  */
-@Controller("${rootrootArtifactid}.LagTimeReportController")
-@RequestMapping(value = "module/${rootArtifactid}/${rootArtifactid}.form")
+@Controller
+@RequestMapping(value = "/module/lagtimereport")
 public class LagTimeReportController {
 	
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Autowired
-	UserService userService;
+	LagTimeReportSetupService lagtimeService;
+	
+	// @Autowired
+	// UserService userService;
 	
 	/** Success form view name */
-	private final String VIEW = "/module/${rootArtifactid}/${rootArtifactid}";
+	private final String VIEW = "/module/lagtimereport/lagtimereport";
+	
+	private final String VIEW2 = "/module/lagtimereport/setupLagtimereport.form";
 	
 	/**
 	 * Initially called after the getUsers method to get the landing form name
 	 * 
 	 * @return String form view name
 	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public String onGet() {
-		return VIEW;
-	}
 	
 	/**
 	 * All the parameters are optional based on the necessity
@@ -59,29 +67,74 @@ public class LagTimeReportController {
 	 * @param errors
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST)
-	public String onPost(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject,
-	        BindingResult errors) {
-		
-		if (errors.hasErrors()) {
-			// return error view
-		}
-		
-		return VIEW;
+	public LagTimeReportSetupService getLagtimeService() {
+		return lagtimeService;
 	}
 	
-	/**
-	 * This class returns the form backing object. This can be a string, a boolean, or a normal java
-	 * pojo. The bean name defined in the ModelAttribute annotation and the type can be just defined
-	 * by the return type of this method
-	 */
-	@ModelAttribute("users")
-	protected List<User> getUsers() throws Exception {
-		List<User> users = userService.getAllUsers();
+	public void setLagtimeService(LagTimeReportSetupService lagtimeService) {
+		this.lagtimeService = lagtimeService;
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(LagTimeReportSetup.class, new LagTimeReportSetupEditor());
+	}
+	
+	@RequestMapping(value = "/lagtimereport.list", method = RequestMethod.GET)
+	public void showForm() {
+		//model.addAttribute("lagtimereport", new LagTimeReportSetup());
+	}
+	
+	@RequestMapping(value = "/setupLagtimereport.form", method = RequestMethod.GET)
+	public void showSetupLagTimeForm() {
+		//model.addAttribute("lagtimereport", new LagTimeReportSetup());
+		//return "redirect:setupLagtimereport.form";
+	}
+	
+	@ModelAttribute("setupLagtimereport")
+	LagTimeReportSetup formBackingObject(@RequestParam(value = "lagtimereportId", required = false) Integer lagtimereportId) {
+		if (lagtimereportId != null) {
+			LagTimeReportSetup agTimeReportSetup = lagtimeService.getLagTimeReportSetup(lagtimereportId);
+			
+			return agTimeReportSetup;
+		}
+		LagTimeReportSetup lagTimeReportSetup = new LagTimeReportSetup();
 		
-		// this object will be made available to the jsp page under the variable name
-		// that is defined in the @ModuleAttribute tag
-		return users;
+		return lagTimeReportSetup;
+	}
+	
+	@RequestMapping(value = "/setupLagtimereport", method = RequestMethod.POST)
+	public String saveLagTimeReportSetup(HttpSession httpSession, HttpServletRequest request,
+	        @ModelAttribute("setupLagtimereport") LagTimeReportSetup lagtimereport, BindingResult errors) {
+		
+		if (errors.hasErrors()) {
+			return VIEW;
+		}
+		LagTimeReportSetup updateLagtimereport = new LagTimeReportSetup();
+		double version = 0;
+		double updateVersion = 0;
+		DecimalFormat df = new DecimalFormat("#.#");
+		if (lagtimereport.getLagTimeReportId() != null && lagtimereport.getVersion() != null) {
+			version = lagtimereport.getVersion() + 0.1;
+			updateVersion = Double.parseDouble(df.format(version));
+			updateLagtimereport.setName(lagtimereport.getName());
+			updateLagtimereport.setDescription(lagtimereport.getDescription());
+			updateLagtimereport.setVersion(updateVersion);
+			
+			lagtimeService.saveLagTimeReportSetup(updateLagtimereport);
+		} else {
+			lagtimereport.setVersion(1.0);
+			lagtimeService.saveLagTimeReportSetup(lagtimereport);
+		}
+		
+		return "redirect:lagtimereport.list";
+	}
+	
+	@ModelAttribute("reports")
+	protected List<LagTimeReportSetup> getAllLagTimeReportSetup() throws Exception {
+		List<LagTimeReportSetup> reports = lagtimeService.getAllLagTimeReportSetup();
+		
+		return reports;
 	}
 	
 }
