@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openmrs.module.lagtimereport.api;
+package org.openmrs.module.lagtimereport.api.db;
 
 import java.util.List;
 

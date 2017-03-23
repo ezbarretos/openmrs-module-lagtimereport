@@ -54,7 +54,7 @@ public class LagTimeReportDaoTest extends BaseModuleContextSensitiveTest {
 		LagTimeReportSetup savedItem = dao.getLagTimeReportSetupByUuid(item.getUuid());
 		
 		assertThat(savedItem, hasProperty("uuid", is(item.getUuid())));
-		assertThat(savedItem, hasProperty("owner", is(item.getCreator())));
+		assertThat(savedItem, hasProperty("creator", is(item.getCreator())));
 		assertThat(savedItem, hasProperty("description", is(item.getDescription())));
 	}
 }

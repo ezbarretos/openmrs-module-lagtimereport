@@ -17,8 +17,8 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
-import org.openmrs.module.lagtimereport.api.LagTimeReportSetupService;
 import org.openmrs.module.lagtimereport.api.dao.LagTimeReportSetupDao;
+import org.openmrs.module.lagtimereport.api.db.LagTimeReportSetupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

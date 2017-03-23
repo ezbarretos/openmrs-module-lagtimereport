@@ -12,33 +12,38 @@
 
 <div class="widget">
 <h4><b class="boxHeader"><spring:message code="lagtimereport.title" /></b></h4>
-	<li>
+
 		<a
 		href="${pageContext.request.contextPath}/module/lagtimereport/setupLagtimereport.form"><spring:message
 				code="lagtimereport.setup.menu" /></a>
-	</li>
+
 <br/>
+<form method="post">
+	
+<fieldset>
 <table id="reportTable" class="display">
 <thead>
   <tr>
    <th></th>
    <th>Name</th>
    <th>Description</th>
-   <th>Version</th>
+   <th>Revision</th>
    <th>Created on</th>
-   <th>Edit</th>
   </tr>
   </thead>
   <c:forEach var="report" items="${reports}">
       <tr>
-      	<td><input type="checkbox" name="checkbox" id="checkbox"></td>
-        <td id="name">${report.name}</td>
+      	<td><input type="checkbox" name="retire" id="retire" value="${report.lagTimeReportId }" /></td>
+        <td id="name"><a href="setupLagtimereport.form?lagtimereportId=${report.lagTimeReportId}" id="lagtimeId">${report.name}</a></td>
         <td id="description">${report.description}</td>
         <td id="name">${report.version}</td>
         <td id="description">${report.dateCreated}</td>
-        <td><a href="setupLagtimereport.form?lagtimereportId=${report.lagTimeReportId}" id="lagtimeId">Edit</a></td>
       </tr>		
   </c:forEach>
-</table>
+  </table>
+  <br /> <input type="submit"
+				value="<openmrs:message code="lagtimereport.retire"/>" name="retire">
+		</fieldset>
+  </form>
 </div>
 <%@ include file="/WEB-INF/template/footer.jsp"%>

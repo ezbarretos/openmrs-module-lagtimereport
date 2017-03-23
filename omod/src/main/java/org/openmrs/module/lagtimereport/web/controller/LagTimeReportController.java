@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
-import org.openmrs.module.lagtimereport.api.LagTimeReportSetupService;
+import org.openmrs.module.lagtimereport.api.db.LagTimeReportSetupService;
 import org.openmrs.module.lagtimereport.propertyeditor.LagTimeReportSetupEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,10 +26,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionStatus;
 
 /**
  * This class configured as controller using annotation and mapped with the URL of
@@ -113,6 +113,7 @@ public class LagTimeReportController {
 		LagTimeReportSetup updateLagtimereport = new LagTimeReportSetup();
 		double version = 0;
 		double updateVersion = 0;
+		
 		DecimalFormat df = new DecimalFormat("#.#");
 		if (lagtimereport.getLagTimeReportId() != null && lagtimereport.getVersion() != null) {
 			version = lagtimereport.getVersion() + 0.1;
@@ -120,7 +121,7 @@ public class LagTimeReportController {
 			updateLagtimereport.setName(lagtimereport.getName());
 			updateLagtimereport.setDescription(lagtimereport.getDescription());
 			updateLagtimereport.setVersion(updateVersion);
-			
+			lagtimereport.setVoided(true);
 			lagtimeService.saveLagTimeReportSetup(updateLagtimereport);
 		} else {
 			lagtimereport.setVersion(1.0);
@@ -135,6 +136,17 @@ public class LagTimeReportController {
 		List<LagTimeReportSetup> reports = lagtimeService.getAllLagTimeReportSetup();
 		
 		return reports;
+	}
+	
+	@RequestMapping(value = "/lagtimereport", method = RequestMethod.POST)
+	public String retireLagTimeReportSetup(HttpServletRequest request) {
+		int id = Integer.parseInt(request.getParameter("retire"));
+		LagTimeReportSetup lagtimereport = formBackingObject(id);
+		lagtimereport.setVoided(true);
+		lagtimeService.updateLagTimeReportSetup(lagtimereport);
+		
+		return "redirect:lagtimereport.list";
+		
 	}
 	
 }

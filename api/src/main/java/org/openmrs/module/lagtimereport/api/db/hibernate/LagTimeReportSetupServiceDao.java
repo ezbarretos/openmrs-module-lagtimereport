@@ -7,7 +7,7 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.lagtimereport.api.dao.impl;
+package org.openmrs.module.lagtimereport.api.db.hibernate;
 
 import java.util.List;
 

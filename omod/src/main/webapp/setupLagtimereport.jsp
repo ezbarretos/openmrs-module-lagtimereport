@@ -4,6 +4,20 @@
 
 <%@ include file="template/localMenu.jsp"%>
 
+<openmrs:htmlInclude file="/moduleResources/lagtimereport/js/jquery-3.1.1.min.js" />
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#save").click(function() {
+		$("form").submit();
+	});
+	$("#cancel").click(function() {
+		window.location.href = "${pageContext.request.contextPath}/module/lagtimereport/lagtimereport.list";
+	});
+});
+
+</script>
+
 <div class="widget">
 	<h4>
 		<b class="boxHeader"><spring:message
@@ -30,8 +44,15 @@
 					</td>
 				</tr>
 			</table>
-			<br /> <input type="submit"
-				value="<openmrs:message code="lagtimereport.save"/>" name="save">
+			<br />
+			<tr>
+			<td> <input type="button"
+				value="<openmrs:message code="lagtimereport.save"/>" name="save" id="save">
+				</td>
+				<td> <input type="button"
+				value="<openmrs:message code="lagtimereport.cancel"/>" name="cancel" id="cancel">
+				</td>
+				</tr>
 		</fieldset>
 	</form>
 

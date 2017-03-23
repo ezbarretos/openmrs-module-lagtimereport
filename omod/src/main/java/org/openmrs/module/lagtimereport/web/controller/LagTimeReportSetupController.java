@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
-import org.openmrs.module.lagtimereport.api.LagTimeReportSetupService;
+import org.openmrs.module.lagtimereport.api.db.LagTimeReportSetupService;
 import org.openmrs.module.lagtimereport.propertyeditor.LagTimeReportSetupEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
