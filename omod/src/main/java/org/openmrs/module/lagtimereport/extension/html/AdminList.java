@@ -44,8 +44,8 @@ public class AdminList extends AdministrationSectionExt {
 		Map<String, String> map = new LinkedHashMap<String, String>();
 		
 		map.put("module/lagtimereport/manageLagtimereport.list", "lagtimereport.manage.menu");
-		map.put("module/lagtimereport/setupLagtimereport.form", "lagtimereport.setup.menu");
-		map.put("module/lagtimereport/lagtimereport.list", "lagtimereport.title");
+		map.put("module/lagtimereport/addLagTimeReportSetup.form", "lagtimereport.setup.menu");
+		map.put("module/lagtimereport/lagtimereportList.list", "lagtimereport.title");
 		
 		return map;
 	}

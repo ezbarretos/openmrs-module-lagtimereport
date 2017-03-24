@@ -1,28 +1,18 @@
 /**
  * 
  */
-package org.openmrs.module.lagtimereport.api.db;
+package org.openmrs.module.lagtimereport.db;
 
 import java.util.List;
 
-import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
-import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.lagtimereport.LagTimeReportConfig;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author ossemaeb
  */
-@Transactional
-public interface LagTimeReportSetupService extends OpenmrsService {
+public interface LagTimeReportSetupDao {
 	
-	@Authorized()
-	@Transactional(readOnly = true)
-	public LagTimeReportSetup getLagTimeReportSetupByUuid(String uuid) throws APIException;
-	
-	@Authorized(LagTimeReportConfig.MODULE_PRIVILEGE)
 	public LagTimeReportSetup saveLagTimeReportSetup(LagTimeReportSetup lagTimeReport) throws APIException;
 	
 	public LagTimeReportSetup updateLagTimeReportSetup(LagTimeReportSetup lagTimeReport) throws APIException;
@@ -33,5 +23,12 @@ public interface LagTimeReportSetupService extends OpenmrsService {
 	
 	public LagTimeReportSetup getLagTimeReportSetup(Integer lagTimeReportById) throws APIException;
 	
-	public LagTimeReportSetup retireLagTimeReportSetup(LagTimeReportSetup lagTimeReport) throws APIException;
+	public LagTimeReportSetup getLagTimeReportSetupByUuid(String uuid) throws APIException;
+	
+	public LagTimeReportSetup getLagTimeReportSetupByName(String name) throws APIException;
+	
+	public List<LagTimeReportSetup> findLagTimeReportSetup(String name) throws APIException;
+	
+	public void deleteLagTimeReportSetup(LagTimeReportSetup lagTimeReport) throws APIException;
+	
 }

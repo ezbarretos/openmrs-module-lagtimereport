@@ -22,8 +22,8 @@ import org.mockito.MockitoAnnotations;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
-import org.openmrs.module.lagtimereport.api.dao.LagTimeReportSetupDao;
-import org.openmrs.module.lagtimereport.api.impl.LagTimeReportSetupServiceImpl;
+import org.openmrs.module.lagtimereport.db.LagTimeReportSetupDao;
+import org.openmrs.module.lagtimereport.service.impl.LagTimeReportSetupServiceImpl;
 
 /**
  * This is a unit test, which verifies logic in LagTimeReportService. It doesn't extend

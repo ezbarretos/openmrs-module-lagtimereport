@@ -9,7 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
-import org.openmrs.module.lagtimereport.api.db.LagTimeReportSetupService;
+import org.openmrs.module.lagtimereport.service.LagTimeReportSetupService;
 import org.springframework.util.StringUtils;
 
 /**

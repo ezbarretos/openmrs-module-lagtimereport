@@ -9,24 +9,22 @@
  */
 package org.openmrs.module.lagtimereport.web.controller;
 
-import java.text.DecimalFormat;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
-import org.openmrs.module.lagtimereport.api.db.LagTimeReportSetupService;
 import org.openmrs.module.lagtimereport.propertyeditor.LagTimeReportSetupEditor;
+import org.openmrs.module.lagtimereport.service.LagTimeReportSetupService;
+import org.openmrs.validator.ValidateUtil;
+import org.openmrs.web.WebConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  * 'module/${rootArtifactid}/${rootArtifactid}Link.form'.
  */
 @Controller
-@RequestMapping(value = "/module/lagtimereport")
 public class LagTimeReportController {
 	
 	/** Logger for this class and subclasses */
@@ -45,28 +42,6 @@ public class LagTimeReportController {
 	@Autowired
 	LagTimeReportSetupService lagtimeService;
 	
-	// @Autowired
-	// UserService userService;
-	
-	/** Success form view name */
-	private final String VIEW = "/module/lagtimereport/lagtimereport";
-	
-	private final String VIEW2 = "/module/lagtimereport/setupLagtimereport.form";
-	
-	/**
-	 * Initially called after the getUsers method to get the landing form name
-	 * 
-	 * @return String form view name
-	 */
-	
-	/**
-	 * All the parameters are optional based on the necessity
-	 * 
-	 * @param httpSession
-	 * @param anyRequestObject
-	 * @param errors
-	 * @return
-	 */
 	public LagTimeReportSetupService getLagtimeService() {
 		return lagtimeService;
 	}
@@ -80,73 +55,46 @@ public class LagTimeReportController {
 		binder.registerCustomEditor(LagTimeReportSetup.class, new LagTimeReportSetupEditor());
 	}
 	
-	@RequestMapping(value = "/lagtimereport.list", method = RequestMethod.GET)
-	public void showForm() {
-		//model.addAttribute("lagtimereport", new LagTimeReportSetup());
-	}
-	
-	@RequestMapping(value = "/setupLagtimereport.form", method = RequestMethod.GET)
+	@RequestMapping(value = "/module/lagtimereport/addLagTimeReportSetup", method = RequestMethod.GET)
 	public void showSetupLagTimeForm() {
-		//model.addAttribute("lagtimereport", new LagTimeReportSetup());
-		//return "redirect:setupLagtimereport.form";
+		
 	}
 	
-	@ModelAttribute("setupLagtimereport")
-	LagTimeReportSetup formBackingObject(@RequestParam(value = "lagtimereportId", required = false) Integer lagtimereportId) {
+	@ModelAttribute("lagTimeTeportSetup")
+	public LagTimeReportSetup getLagTimeReportSetup(
+	        @RequestParam(value = "lagtimereportId", required = false) Integer lagtimereportId) {
 		if (lagtimereportId != null) {
-			LagTimeReportSetup agTimeReportSetup = lagtimeService.getLagTimeReportSetup(lagtimereportId);
+			LagTimeReportSetup lagTimeTeportSetup = lagtimeService.getLagTimeReportSetup(lagtimereportId);
 			
-			return agTimeReportSetup;
+			return lagTimeTeportSetup;
 		}
-		LagTimeReportSetup lagTimeReportSetup = new LagTimeReportSetup();
+		LagTimeReportSetup lagTimeTeportSetup = new LagTimeReportSetup();
 		
-		return lagTimeReportSetup;
+		return lagTimeTeportSetup;
 	}
 	
-	@RequestMapping(value = "/setupLagtimereport", method = RequestMethod.POST)
-	public String saveLagTimeReportSetup(HttpSession httpSession, HttpServletRequest request,
-	        @ModelAttribute("setupLagtimereport") LagTimeReportSetup lagtimereport, BindingResult errors) {
+	@RequestMapping(value = "/module/lagtimereport/addLagTimeReportSetup", method = RequestMethod.POST)
+	public String onSubmit(HttpServletRequest request, LagTimeReportSetup lagTimeReportSetup,
+	        @ModelAttribute("lagTimeTeportSetup") LagTimeReportSetup lagtimereport, BindingResult result) throws Exception {
 		
-		if (errors.hasErrors()) {
-			return VIEW;
-		}
-		LagTimeReportSetup updateLagtimereport = new LagTimeReportSetup();
-		double version = 0;
-		double updateVersion = 0;
+		HttpSession httpSession = request.getSession();
 		
-		DecimalFormat df = new DecimalFormat("#.#");
-		if (lagtimereport.getLagTimeReportId() != null && lagtimereport.getVersion() != null) {
-			version = lagtimereport.getVersion() + 0.1;
-			updateVersion = Double.parseDouble(df.format(version));
-			updateLagtimereport.setName(lagtimereport.getName());
-			updateLagtimereport.setDescription(lagtimereport.getDescription());
-			updateLagtimereport.setVersion(updateVersion);
-			lagtimereport.setVoided(true);
-			lagtimeService.saveLagTimeReportSetup(updateLagtimereport);
-		} else {
-			lagtimereport.setVersion(1.0);
-			lagtimeService.saveLagTimeReportSetup(lagtimereport);
+		//if (Context.isAuthenticated()) {
+		
+		if (request.getParameter("save") != null) {
+			ValidateUtil.validate(lagTimeReportSetup, result);
+			if (result.hasErrors()) {
+				return null;
+			} else {
+				lagtimeService.saveLagTimeReportSetup(lagTimeReportSetup);
+				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "lagtimereport.saved");
+			}
 		}
 		
-		return "redirect:lagtimereport.list";
+		//}
+		
+		return "redirect:lagtimereportList.list";
 	}
 	
-	@ModelAttribute("reports")
-	protected List<LagTimeReportSetup> getAllLagTimeReportSetup() throws Exception {
-		List<LagTimeReportSetup> reports = lagtimeService.getAllLagTimeReportSetup();
-		
-		return reports;
-	}
-	
-	@RequestMapping(value = "/lagtimereport", method = RequestMethod.POST)
-	public String retireLagTimeReportSetup(HttpServletRequest request) {
-		int id = Integer.parseInt(request.getParameter("retire"));
-		LagTimeReportSetup lagtimereport = formBackingObject(id);
-		lagtimereport.setVoided(true);
-		lagtimeService.updateLagTimeReportSetup(lagtimereport);
-		
-		return "redirect:lagtimereport.list";
-		
-	}
 	
 }

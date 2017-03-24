@@ -13,13 +13,13 @@
 	
 	<li>
 		<a
-		href="${pageContext.request.contextPath}/module/lagtimereport/setupLagtimereport.form"><spring:message
+		href="${pageContext.request.contextPath}/module/lagtimereport/addLagTimeReportSetup.form"><spring:message
 				code="lagtimereport.setup.menu" /></a>
 	</li>
 	
 	<li>
 		<a
-		href="${pageContext.request.contextPath}/module/lagtimereport/lagtimereport.list"><spring:message
+		href="${pageContext.request.contextPath}/module/lagtimereport/lagtimereportList.list"><spring:message
 				code="lagtimereport.title" /></a>
 	</li>
 	

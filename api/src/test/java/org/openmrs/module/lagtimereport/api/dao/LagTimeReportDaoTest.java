@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
+import org.openmrs.module.lagtimereport.db.LagTimeReportSetupDao;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
