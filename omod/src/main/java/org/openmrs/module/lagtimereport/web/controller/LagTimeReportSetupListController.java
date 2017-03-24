@@ -50,19 +50,21 @@ public class LagTimeReportSetupListController {
 	public void showForm(ModelMap model, @RequestParam(required = false, value = "includedRetired") String includedRetired) {
 		
 		List<LagTimeReportSetup> lagTimeReports = new ArrayList<LagTimeReportSetup>();
-		
-		lagTimeReports = lagtimeService.getAllLagTimeReportSetups();
+		if (includedRetired != null) {
+			lagTimeReports = lagtimeService.getAllLagTimeReportSetups(true);
+		}
+		lagTimeReports = lagtimeService.getAllLagTimeReportSetups(false);
 		
 		model.addAttribute("lagTimeReports", lagTimeReports);
 	}
 	
 	@RequestMapping(value = "/module/lagtimereport/lagtimereportList.list", method = RequestMethod.POST)
 	public String retireLagTimeReportSetup(HttpServletRequest request, ModelMap model) {
-		
+		String reason = request.getParameter("reason");
 		if (request.getParameterValues("checkRetire") != null) {
 			for (String id : request.getParameterValues("checkRetire")) {
 				LagTimeReportSetup lagTimeReport = lagtimeService.getLagTimeReportSetup(Integer.parseInt(id));
-				lagtimeService.retireLagTimeReportSetup(lagTimeReport, "Teste");
+				lagtimeService.retireLagTimeReportSetup(lagTimeReport, reason);
 			}
 		}
 		return "redirect:lagtimereportList.list";

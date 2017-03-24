@@ -15,6 +15,15 @@
 	}
 </script>
 
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#cancel").click(function() {
+		window.location.href = "${pageContext.request.contextPath}/module/lagtimereport/lagtimereport.list";
+	});
+});
+
+</script>
+
 <h2>
 	<spring:message code="lagtimereport.title" />
 </h2>
@@ -40,7 +49,7 @@
 				<td valign="top"><spring:message code="general.description" /></td>
 				<td valign="top"><spring:bind
 						path="lagTimeTeportSetup.description">
-						<textarea name="description" rows="3" cols="40"
+						<textarea name="description" rows="5" cols="40"
 							onkeypress="return forceMaxLength(this, 1024);"><c:out
 								value="${status.value}" /></textarea>
 						<c:if test="${status.errorMessage != ''}">

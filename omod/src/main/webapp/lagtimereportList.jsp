@@ -18,20 +18,38 @@
 	file="/moduleResources/lagtimereport/js/dataTable.js" />
 
 <script type="text/javascript">
-/* 	$(document).ready(function() {
-		$('#retireCheck').each(function(i){
-			  if($(this).prop("checked")) {
-			    $('#retireForm').show();
-			  } else {
-			    $('#retireForm').hide();
-			  }
-			});
-	}); */
 	$(document).ready(function() {
-		$('#includedRetired').click(function(){
-			  window.location.href = "${pageContext.request.contextPath}/module/lagtimereport/lagtimereportList.list";
+		showHideReasonField();
+		showRetired();
+	}); 
+	
+	function showHideReasonField(){
+		$("#reasonForm").hide();
+		$('input[name="checkRetire"]').change(function(){
+			if ($(this).prop("checked")){
+				$('#reasonForm').show();
+			}else
+		    {
+				$("#reasonForm").hide();
+		    }
+		});
+	}
+	
+	
+	function showRetired() {
+		var includedRetired = !$('input[name="includedRetired"]:checked');
+		$('input[name="includedRetired"]').change(function(){
+			if ($(this).prop("checked")){
+				window.location.href = "${pageContext.request.contextPath}"+
+				  "/module/lagtimereport/lagtimereportList.list?includedRetired="+includedRetired; 
+			}else {
+				window.location.href = "${pageContext.request.contextPath}"+
+				  "/module/lagtimereport/lagtimereportList.list?includedRetired=false"; 
+			}
+			  
 			});
-	});
+	}
+
 </script>
 
 <div class="widget">
@@ -42,8 +60,9 @@
 		<td><a
 			href="${pageContext.request.contextPath}/module/lagtimereport/addLagTimeReportSetup.form"><spring:message
 					code="lagtimereport.setup.menu" /></a></td>
-		<td><input type="checkbox" name="includedRetired" id="includedRetired">
-		<spring:message code="lagtimereport.includedRetired" /></td>
+		<td><input type="checkbox" name="includedRetired"
+			id="includedRetired"> <spring:message
+				code="lagtimereport.includedRetired" /></td>
 	</tr>
 	<fieldset>
 		<form method="post">
@@ -72,10 +91,14 @@
 					</tr>
 				</c:forEach>
 			</table>
+			
+			<div id="reasonForm">
+					<textarea name="reason" id="reason" rows="5" cols="40"> </textarea>
+				</div>
+				
 			<br /> <input type="submit"
 				value="<openmrs:message code="lagtimereport.retire"/>" name="retire" />
 		</form>
-		
 </div>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

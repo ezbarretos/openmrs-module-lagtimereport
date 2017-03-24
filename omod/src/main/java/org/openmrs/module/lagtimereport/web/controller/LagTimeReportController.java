@@ -96,5 +96,4 @@ public class LagTimeReportController {
 		return "redirect:lagtimereportList.list";
 	}
 	
-	
 }
