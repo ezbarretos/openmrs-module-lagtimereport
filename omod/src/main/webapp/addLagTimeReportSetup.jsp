@@ -5,7 +5,7 @@
 <%@ include file="template/localMenu.jsp"%>
 
 <openmrs:htmlInclude
-	file="/moduleResources/lagtimereport/js/jquery-3.1.1.min.js" />
+	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/js/jquery-3.1.1.min.js"/>
 
 <script type="text/javascript">
 	function forceMaxLength(object, maxLength) {
@@ -18,7 +18,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#cancel").click(function() {
-		window.location.href = "${pageContext.request.contextPath}/module/lagtimereport/lagtimereport.list";
+		window.location.href = "${pageContext.request.contextPath}/module/lagtimereport/lagtimereportList.list";
 	});
 });
 

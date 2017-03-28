@@ -7,15 +7,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <openmrs:htmlInclude
-	file="/moduleResources/lagtimereport/js/jquery-3.1.1.min.js" />
+	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/js/jquery-3.1.1.min.js" />
 <openmrs:htmlInclude
-	file="/moduleResources/lagtimereport/css/bootstrap.min.css" />
+	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/css/bootstrap.min.css" />
 <openmrs:htmlInclude
-	file="/moduleResources/lagtimereport/css/jquery.dataTables.min.css" />
+	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/css/jquery.dataTables.min.css" />
 <openmrs:htmlInclude
-	file="/moduleResources/lagtimereport/js/jquery.dataTables.min.js" />
+	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/js/jquery.dataTables.min.js" />
 <openmrs:htmlInclude
-	file="/moduleResources/lagtimereport/js/dataTable.js" />
+	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/js/dataTable.js" />
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -25,7 +25,7 @@
 	
 	function showHideReasonField(){
 		$("#reasonForm").hide();
-		$('input[name="checkRetire"]').change(function(){
+		$('input[name="checkRetire"]').click(function(){
 			if ($(this).prop("checked")){
 				$('#reasonForm').show();
 			}else
@@ -35,16 +35,16 @@
 		});
 	}
 	
-	
 	function showRetired() {
-		var includedRetired = !$('input[name="includedRetired"]:checked');
-		$('input[name="includedRetired"]').change(function(){
+		$("#all").hide();
+		$('input[name="includedRetired"]').click(function(){
 			if ($(this).prop("checked")){
-				window.location.href = "${pageContext.request.contextPath}"+
-				  "/module/lagtimereport/lagtimereportList.list?includedRetired="+includedRetired; 
+				$("#notRetired").hide();
+					$("#all").show();
+				
 			}else {
-				window.location.href = "${pageContext.request.contextPath}"+
-				  "/module/lagtimereport/lagtimereportList.list?includedRetired=false"; 
+				$("#all").hide();
+				$("#notRetired").show();
 			}
 			  
 			});
@@ -60,11 +60,11 @@
 		<td><a
 			href="${pageContext.request.contextPath}/module/lagtimereport/addLagTimeReportSetup.form"><spring:message
 					code="lagtimereport.setup.menu" /></a></td>
-		<td><input type="checkbox" name="includedRetired"
+		<td><input type="checkbox" name="includedRetired" 
 			id="includedRetired"> <spring:message
 				code="lagtimereport.includedRetired" /></td>
 	</tr>
-	<fieldset>
+	<fieldset id="notRetired">
 		<form method="post">
 			<table id="reportTable" class="display">
 				<thead>
@@ -76,6 +76,7 @@
 						<th><spring:message code="general.dateCreated" /></th>
 					</tr>
 				</thead>
+				
 				<c:forEach var="report" items="${lagTimeReports}">
 					<tr>
 						<td><input type="checkbox" name="checkRetire"
@@ -99,6 +100,36 @@
 			<br /> <input type="submit"
 				value="<openmrs:message code="lagtimereport.retire"/>" name="retire" />
 		</form>
+		</fieldset>
+		
+		<fieldset id="all">
+			<table id="retiredReportTable" class="display">
+				<thead>
+					<tr>
+						<th></th>
+						<th><spring:message code="general.name" /></th>
+						<th><spring:message code="general.description" /></th>
+						<th><spring:message code="lagtimereport.revision" /></th>
+						<th><spring:message code="general.dateCreated" /></th>
+					</tr>
+				</thead>
+				
+				<c:forEach var="report1" items="${retiredLagTimeReports}">
+					<tr>
+						<td><input type="checkbox" name="checkRetire"
+							id="checkRetire"
+							value="${report1.retired }" /></td>
+						<td id="name"><a
+							href="addLagTimeReportSetup.form?lagtimereportId=${report1.lagTimeReportId}"
+							id="lagtimeId">${report1.name}</a></td>
+						<td id="description">${report1.description}</td>
+						<td id="name">${report1.version}</td>
+						<td id="dateCreated"><fmt:formatDate
+								value="${report1.dateCreated}" /></td>
+					</tr>
+				</c:forEach>
+			</table>
+		</fieldset>
 </div>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

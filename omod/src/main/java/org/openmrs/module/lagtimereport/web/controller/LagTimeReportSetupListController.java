@@ -25,9 +25,9 @@ import org.openmrs.module.lagtimereport.service.LagTimeReportSetupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LagTimeReportSetupListController {
@@ -47,15 +47,22 @@ public class LagTimeReportSetupListController {
 	}
 	
 	@RequestMapping(value = "/module/lagtimereport/lagtimereportList.list", method = RequestMethod.GET)
-	public void showForm(ModelMap model, @RequestParam(required = false, value = "includedRetired") String includedRetired) {
+	public void showForm() {
 		
+	}
+	
+	@ModelAttribute("lagTimeReports")
+	public List<LagTimeReportSetup> getAllLagTimeReportSetups() {
 		List<LagTimeReportSetup> lagTimeReports = new ArrayList<LagTimeReportSetup>();
-		if (includedRetired != null) {
-			lagTimeReports = lagtimeService.getAllLagTimeReportSetups(true);
-		}
 		lagTimeReports = lagtimeService.getAllLagTimeReportSetups(false);
-		
-		model.addAttribute("lagTimeReports", lagTimeReports);
+		return lagTimeReports;
+	}
+	
+	@ModelAttribute("retiredLagTimeReports")
+	public List<LagTimeReportSetup> getAllRetiredLagTimeReportSetups() {
+		List<LagTimeReportSetup> retiredLagTimeReports = new ArrayList<LagTimeReportSetup>();
+		retiredLagTimeReports = lagtimeService.getAllLagTimeReportSetups(true);
+		return retiredLagTimeReports;
 	}
 	
 	@RequestMapping(value = "/module/lagtimereport/lagtimereportList.list", method = RequestMethod.POST)
