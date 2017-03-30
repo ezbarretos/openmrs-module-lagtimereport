@@ -1,38 +1,50 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">  
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.openmrs.module.lagtimereport">
 	<class name="LagTimeReportSetup" table="lagtimereport_setup">
 
-		<id name="lagTimeReportId" type="java.lang.Integer"	column="lagtimereport_id" unsaved-value="0">
+		<id name="lagTimeReportId" type="java.lang.Integer" column="lagtimereport_id"
+			unsaved-value="0">
 			<generator class="native">
 				<param name="sequence">lagtimereport_id_seq</param>
 			</generator>
 		</id>
-		
+
 		<discriminator column="lagtimereport_id" insert="false" />
-		
-		<property name="name" type="java.lang.String" not-null="true" length="255"/>
-		
-		<property name="description" type="java.lang.String" length="1024"/>
-		
-		<property name="version" type="java.lang.Double"/>
-		
-		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
-		
-		<many-to-one name="creator" class="org.openmrs.User" not-null="true" />	
-		
-		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
-		
-		<many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" />
-				
-		<property name="dateRetired" type="java.util.Date" column="date_retired" length="19"/>
-		
-		<property name="retireReason" type="java.lang.String" column="retire_reason" length="255" />
-			
+
+		<property name="name" type="java.lang.String" not-null="true"
+			length="255" />
+
+		<property name="description" type="java.lang.String" length="1024" />
+
+		<property name="version" type="java.lang.Double" />
+
+		<property name="dateCreated" type="java.util.Date" column="date_created"
+			not-null="true" length="19" />
+
+		<many-to-one name="creator" class="org.openmrs.User"
+			not-null="true" />
+
+		<property name="uuid" type="java.lang.String" column="uuid"
+			length="38" unique="true" />
+
+		<many-to-one name="retiredBy" class="org.openmrs.User"
+			column="retired_by" />
+
+		<property name="dateRetired" type="java.util.Date" column="date_retired"
+			length="19" />
+
+		<property name="retireReason" type="java.lang.String" column="retire_reason"
+			length="255" />
+
 		<property name="retired" type="boolean" length="1" not-null="true" />
-		
-				
+
+		<set name="forms" table="lagtimereport_forms" cascade="all">
+			<key column="lagtimereport_id" />
+			<many-to-many column="form_id" class="org.openmrs.Form" />
+		</set>
+
 	</class>
 </hibernate-mapping>

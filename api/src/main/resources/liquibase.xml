@@ -12,7 +12,7 @@
 	<!-- Uncomment the changeset below if you want to make the Item class persistable, 
 		see also Item and LagTimeReportDaoTest -->
 
-	<changeSet id="lagtimereport-2017-23-03-14-25" author="ossemaeb">
+	<changeSet id="lagtimereport-2017-29-03-09-25" author="ossemaeb">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="lagtimereport_setup" />
@@ -65,5 +65,16 @@
 			referencedTableName="users" referencedColumnNames="user_id" /> -->
 
 	</changeSet>
+	
+	<changeSet author="ossemaeb (generated)" id="1227303685425-13">
+        <createTable tableName="lagtimereport_forms">
+            <column name="lagtimereport_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="form_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>

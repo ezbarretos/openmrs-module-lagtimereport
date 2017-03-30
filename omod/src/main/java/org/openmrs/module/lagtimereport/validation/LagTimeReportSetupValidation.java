@@ -3,6 +3,7 @@
  */
 package org.openmrs.module.lagtimereport.validation;
 
+import org.openmrs.Form;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -29,10 +30,10 @@ public class LagTimeReportSetupValidation implements Validator {
 			ValidationUtils.rejectIfEmpty(errors, "description", "lagtimereport.error.description");
 			ValidationUtils.rejectIfEmpty(errors, "forms", "lagtimereport.error.forms");
 			
-			/*Form forms = (Form) lagtimereport.getForms();
+			Form forms = (Form) lagtimereport.getForms();
 			if (forms == null)
 				errors.rejectValue("forms", "lagtimereport.form.emptyForm");
-			errors.rejectValue("forms", "lagtimereport.form.notSupportedForm");*/
+			errors.rejectValue("forms", "lagtimereport.form.notSupportedForm");
 		}
 		
 	}

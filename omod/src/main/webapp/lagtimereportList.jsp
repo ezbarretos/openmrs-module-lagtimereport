@@ -11,6 +11,8 @@
 <openmrs:htmlInclude
 	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/css/bootstrap.min.css" />
 <openmrs:htmlInclude
+	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/js/bootstrap.min.js" />
+<openmrs:htmlInclude
 	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/css/jquery.dataTables.min.css" />
 <openmrs:htmlInclude
 	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/js/jquery.dataTables.min.js" />
@@ -59,16 +61,17 @@
 	<tr>
 		<td><a
 			href="${pageContext.request.contextPath}/module/lagtimereport/addLagTimeReportSetup.form"><spring:message
-					code="lagtimereport.setup.menu" /></a></td>
-		<td><input type="checkbox" name="includedRetired" 
+					code="lagtimereport.setup.menu" /></a></td>&nbsp
+		<td><input type="checkbox" name="includedRetired"
 			id="includedRetired"> <spring:message
 				code="lagtimereport.includedRetired" /></td>
 	</tr>
 	<fieldset id="notRetired">
 		<form method="post">
-			<table id="reportTable" class="display">
+			<table  id="reportTable" class="table table-striped">
 				<thead>
 					<tr>
+					<th></th>
 						<th></th>
 						<th><spring:message code="general.name" /></th>
 						<th><spring:message code="general.description" /></th>
@@ -76,9 +79,9 @@
 						<th><spring:message code="general.dateCreated" /></th>
 					</tr>
 				</thead>
-				
+
 				<c:forEach var="report" items="${lagTimeReports}">
-					<tr>
+					<tr><td><input type="hidden" name="id" value="${report.lagTimeReportId}"/></td>
 						<td><input type="checkbox" name="checkRetire"
 							id="checkRetire" class="checkRetireId"
 							value="${report.lagTimeReportId }" /></td>
@@ -92,44 +95,53 @@
 					</tr>
 				</c:forEach>
 			</table>
-			
+
 			<div id="reasonForm">
-					<textarea name="reason" id="reason" rows="5" cols="40"> </textarea>
-				</div>
-				
+				<textarea name="reason" id="reason" rows="5" cols="40"> </textarea>
+			</div>
+
 			<br /> <input type="submit"
 				value="<openmrs:message code="lagtimereport.retire"/>" name="retire" />
 		</form>
-		</fieldset>
-		
-		<fieldset id="all">
-			<table id="retiredReportTable" class="display">
-				<thead>
-					<tr>
-						<th></th>
-						<th><spring:message code="general.name" /></th>
-						<th><spring:message code="general.description" /></th>
-						<th><spring:message code="lagtimereport.revision" /></th>
-						<th><spring:message code="general.dateCreated" /></th>
-					</tr>
-				</thead>
-				
-				<c:forEach var="report1" items="${retiredLagTimeReports}">
-					<tr>
-						<td><input type="checkbox" name="checkRetire"
-							id="checkRetire"
-							value="${report1.retired }" /></td>
-						<td id="name"><a
-							href="addLagTimeReportSetup.form?lagtimereportId=${report1.lagTimeReportId}"
-							id="lagtimeId">${report1.name}</a></td>
-						<td id="description">${report1.description}</td>
-						<td id="name">${report1.version}</td>
-						<td id="dateCreated"><fmt:formatDate
-								value="${report1.dateCreated}" /></td>
-					</tr>
-				</c:forEach>
-			</table>
-		</fieldset>
+	</fieldset>
+
+	<fieldset id="all">
+		<table id="retiredReportTable" class="table table-striped">
+			<thead>
+				<tr>
+				<th></th>
+					<th></th>
+					<th><spring:message code="general.name" /></th>
+					<th><spring:message code="general.description" /></th>
+					<th><spring:message code="lagtimereport.revision" /></th>
+					<th><spring:message code="general.dateCreated" /></th>
+				</tr>
+			</thead>
+
+			<c:forEach var="allReport" items="${retiredLagTimeReports}">
+				<tr>
+				<td><input type="hidden" name="id" value="${allReport.lagTimeReportId}"/></td>
+					<c:choose>
+						<c:when test="${allReport.retired == true}">
+							<td><input type="checkbox" name="checkRetire" checked="checked"
+								id="checkRetire" value="${allReport.lagTimeReportId}" disabled="disabled"/></td>
+						</c:when>
+						<c:otherwise>
+							<td><input type="checkbox" name="checkRetire"
+								id="checkRetire" value="${allReport.lagTimeReportId}" /></td>
+						</c:otherwise>
+					</c:choose>
+					<td id="name"><a
+						href="addLagTimeReportSetup.form?lagtimereportId=${allReport.lagTimeReportId}"
+						id="lagtimeId">${allReport.name}</a></td>
+					<td id="description">${allReport.description}</td>
+					<td id="name">${allReport.version}</td>
+					<td id="dateCreated"><fmt:formatDate
+							value="${allReport.dateCreated}" /></td>
+				</tr>
+			</c:forEach>
+		</table>
+	</fieldset>
 </div>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

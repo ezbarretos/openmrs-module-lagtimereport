@@ -9,11 +9,16 @@
  */
 package org.openmrs.module.lagtimereport.web.controller;
 
+import java.beans.PropertyEditorSupport;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Form;
+import org.openmrs.api.FormService;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
 import org.openmrs.module.lagtimereport.propertyeditor.LagTimeReportSetupEditor;
 import org.openmrs.module.lagtimereport.service.LagTimeReportSetupService;
@@ -42,6 +47,9 @@ public class LagTimeReportController {
 	@Autowired
 	LagTimeReportSetupService lagtimeService;
 	
+	@Autowired
+	FormService formService;
+	
 	public LagTimeReportSetupService getLagtimeService() {
 		return lagtimeService;
 	}
@@ -50,9 +58,25 @@ public class LagTimeReportController {
 		this.lagtimeService = lagtimeService;
 	}
 	
+	public FormService getFormService() {
+		return formService;
+	}
+	
+	public void setFormService(FormService formService) {
+		this.formService = formService;
+	}
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(LagTimeReportSetup.class, new LagTimeReportSetupEditor());
+		binder.registerCustomEditor(Form.class, new PropertyEditorSupport() {
+			
+			@Override
+			public void setAsText(String text) {
+				Form form = formService.getForm(Integer.parseInt(text));
+				super.setValue(form);
+			}
+		});
 	}
 	
 	@RequestMapping(value = "/module/lagtimereport/addLagTimeReportSetup", method = RequestMethod.GET)
@@ -73,23 +97,28 @@ public class LagTimeReportController {
 		return lagTimeTeportSetup;
 	}
 	
+	@ModelAttribute("listLagTimeReportForms")
+	public List<Form> getAllFroms() {
+		return formService.getPublishedForms();
+		
+	}
+	
 	@RequestMapping(value = "/module/lagtimereport/addLagTimeReportSetup", method = RequestMethod.POST)
-	public String onSubmit(HttpServletRequest request, LagTimeReportSetup lagTimeReportSetup,
-	        @ModelAttribute("lagTimeTeportSetup") LagTimeReportSetup lagtimereport, BindingResult result) throws Exception {
+	public String onSubmit(HttpServletRequest request,
+	        @ModelAttribute("lagTimeTeportSetup") LagTimeReportSetup lagTimeReportSetup, BindingResult result)
+	        throws Exception {
 		
 		HttpSession httpSession = request.getSession();
 		
 		//if (Context.isAuthenticated()) {
+		ValidateUtil.validate(lagTimeReportSetup, result);
 		
-		if (request.getParameter("save") != null) {
-			ValidateUtil.validate(lagTimeReportSetup, result);
-			if (result.hasErrors()) {
+		/*	if (result.hasErrors()) {
+				log.fatal(result);
 				return null;
-			} else {
-				lagtimeService.saveLagTimeReportSetup(lagTimeReportSetup);
-				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "lagtimereport.saved");
-			}
-		}
+			}*/
+		lagtimeService.saveLagTimeReportSetup(lagTimeReportSetup);
+		httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "lagtimereport.saved");
 		
 		//}
 		
