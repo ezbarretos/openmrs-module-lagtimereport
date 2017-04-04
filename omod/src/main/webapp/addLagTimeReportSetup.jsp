@@ -26,15 +26,25 @@
 </script>
 
 <script type="text/javascript">
-$(document).ready(function() {
-	$("#cancel").click(function() {
-		window.location.href = "${pageContext.request.contextPath}/module/lagtimereport/lagtimereportList.list";
+	$(document).ready(function() {
+		redirectCancel();
+		ckeckAllForms();
 	});
-});
 
+	function redirectCancel() {
+		$("#cancel").click(function() {
+			window.location.href = "${pageContext.request.contextPath}/module/lagtimereport/lagtimereportList.list";
+		});
+	}
+
+	function ckeckAllForms() {
+		$('input[name="selectForms"]').click(function() {
+			$('input[name="forms"]').prop("checked", $(this).prop("checked"));
+		});
+	}
 </script>
 
-<div class="container">
+<!-- <div class="container">
 	<div class="row">
 		<div class="col-md-4">AS</div>
 		<div class="col-md-8">BS</div>
@@ -48,7 +58,7 @@ $(document).ready(function() {
 		<div class="col-md-4">Bt1</div>
 		<div class="col-md-8">Bt2</div>
 	</div>
-</div>
+</div> -->
 
 
 <div class="widget">
@@ -94,15 +104,36 @@ $(document).ready(function() {
 					multiple="multiple" /> <spring:message
 						code="lagtimereport.selectAll.forms" /></td>
 			</tr>
+
 			<table frame="box">
-				<c:forEach var="forms" items="${listLagTimeReportForms}" varStatus="status">
-					<tr>
-						<td><input type="hidden" name="id" value="${forms.formId}" /></td>
-						<td><input type="checkbox" name="forms" id="forms"
-							value="${forms.formId }" /></td>
-						<td id="name">${forms.name}</td>
-					</tr>
+				<c:forEach var="forms" items="${listLagTimeReportForms}"
+					varStatus="status">
+					<c:set var="formAlreadyExists" value="${false}" />
+					<c:if test="${(status.index - 1) > 0}">
+						<c:forEach var="lagtime" items="${lagTimeTeportSetup.forms}"
+							begin="0" end="${status.index - 1}" varStatus="inner">
+							<c:if test="${lagtime.formId == forms.formId}">
+								<tr>
+									<td><input type="checkbox" name="forms"
+										id="forms" value="${forms.formId }"
+										${lagtime.formId == forms.formId ? "checked":""} />
+									</td>
+									<td>${forms.name }</td>
+
+								</tr>
+								<c:set var="formAlreadyExists" value="${true}" />
+							</c:if>
+						</c:forEach>
+					</c:if>
+					<c:if test="${not formAlreadyExists}">
+						<tr>
+							<td><input type="checkbox" name="forms"
+								id="forms" value="${forms.formId }" }/>
+							</td>
+							<td>${forms.name }</td>
+					</c:if>
 				</c:forEach>
+
 			</table>
 			<br />
 			<tr>

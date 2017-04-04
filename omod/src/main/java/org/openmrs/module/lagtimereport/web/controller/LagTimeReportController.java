@@ -113,10 +113,10 @@ public class LagTimeReportController {
 		//if (Context.isAuthenticated()) {
 		ValidateUtil.validate(lagTimeReportSetup, result);
 		
-		/*	if (result.hasErrors()) {
-				log.fatal(result);
-				return null;
-			}*/
+		/*		if (result.hasErrors()) {
+					log.fatal(result);
+					return null;
+				}*/
 		lagtimeService.saveLagTimeReportSetup(lagTimeReportSetup);
 		httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "lagtimereport.saved");
 		

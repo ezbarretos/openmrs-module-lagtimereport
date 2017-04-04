@@ -68,20 +68,20 @@
 	</tr>
 	<fieldset id="notRetired">
 		<form method="post">
-			<table  id="reportTable" class="table table-striped">
+			<table id="reportTable" class="table table-striped">
 				<thead>
 					<tr>
-					<th></th>
 						<th></th>
 						<th><spring:message code="general.name" /></th>
 						<th><spring:message code="general.description" /></th>
+						<th><spring:message code="lagtimereport.forms" /></th>
 						<th><spring:message code="lagtimereport.revision" /></th>
 						<th><spring:message code="general.dateCreated" /></th>
 					</tr>
 				</thead>
 
 				<c:forEach var="report" items="${lagTimeReports}">
-					<tr><td><input type="hidden" name="id" value="${report.lagTimeReportId}"/></td>
+					<tr>
 						<td><input type="checkbox" name="checkRetire"
 							id="checkRetire" class="checkRetireId"
 							value="${report.lagTimeReportId }" /></td>
@@ -89,6 +89,9 @@
 							href="addLagTimeReportSetup.form?lagtimereportId=${report.lagTimeReportId}"
 							id="lagtimeId">${report.name}</a></td>
 						<td id="description">${report.description}</td>
+						<td id="forms"><c:forEach var="forms" items="${report.forms}">
+							${forms.name} <c:out value="${','}" />
+							</c:forEach></td>
 						<td id="name">${report.version}</td>
 						<td id="dateCreated"><fmt:formatDate
 								value="${report.dateCreated}" /></td>
@@ -109,10 +112,10 @@
 		<table id="retiredReportTable" class="table table-striped">
 			<thead>
 				<tr>
-				<th></th>
 					<th></th>
 					<th><spring:message code="general.name" /></th>
 					<th><spring:message code="general.description" /></th>
+					<th><spring:message code="lagtimereport.forms" /></th>
 					<th><spring:message code="lagtimereport.revision" /></th>
 					<th><spring:message code="general.dateCreated" /></th>
 				</tr>
@@ -120,11 +123,11 @@
 
 			<c:forEach var="allReport" items="${retiredLagTimeReports}">
 				<tr>
-				<td><input type="hidden" name="id" value="${allReport.lagTimeReportId}"/></td>
 					<c:choose>
 						<c:when test="${allReport.retired == true}">
-							<td><input type="checkbox" name="checkRetire" checked="checked"
-								id="checkRetire" value="${allReport.lagTimeReportId}" disabled="disabled"/></td>
+							<td><input type="checkbox" name="checkRetire"
+								checked="checked" id="checkRetire"
+								value="${allReport.lagTimeReportId}" disabled="disabled" /></td>
 						</c:when>
 						<c:otherwise>
 							<td><input type="checkbox" name="checkRetire"
@@ -135,6 +138,10 @@
 						href="addLagTimeReportSetup.form?lagtimereportId=${allReport.lagTimeReportId}"
 						id="lagtimeId">${allReport.name}</a></td>
 					<td id="description">${allReport.description}</td>
+					<td id="forms"><c:forEach var="forms"
+							items="${allReport.forms}">
+							${forms.name}<c:out value="${','}" />
+						</c:forEach></td>
 					<td id="name">${allReport.version}</td>
 					<td id="dateCreated"><fmt:formatDate
 							value="${allReport.dateCreated}" /></td>

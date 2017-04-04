@@ -53,8 +53,7 @@ public class LagTimeReportSetupListController {
 	
 	@ModelAttribute("lagTimeReports")
 	public List<LagTimeReportSetup> getAllLagTimeReportSetups() {
-		List<LagTimeReportSetup> lagTimeReports = new ArrayList<LagTimeReportSetup>();
-		lagTimeReports = lagtimeService.getAllLagTimeReportSetups(false);
+		List<LagTimeReportSetup> lagTimeReports = lagtimeService.getAllLagTimeReportSetups(false);
 		return lagTimeReports;
 	}
 	

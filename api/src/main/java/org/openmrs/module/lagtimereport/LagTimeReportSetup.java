@@ -1,7 +1,7 @@
 package org.openmrs.module.lagtimereport;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Form;
@@ -14,7 +14,7 @@ public class LagTimeReportSetup extends BaseOpenmrsMetadata implements Serializa
 	
 	private Double version = 1.0;
 	
-	private Collection<Form> forms;
+	private Set<Form> forms;
 	
 	public LagTimeReportSetup() {
 	}
@@ -56,11 +56,11 @@ public class LagTimeReportSetup extends BaseOpenmrsMetadata implements Serializa
 		setLagTimeReportId(lagTimeReportId);
 	}
 	
-	public Collection<Form> getForms() {
+	public Set<Form> getForms() {
 		return forms;
 	}
 	
-	public void setForms(Collection<Form> forms) {
+	public void setForms(Set<Form> forms) {
 		this.forms = forms;
 	}
 	
