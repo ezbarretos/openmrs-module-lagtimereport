@@ -12,7 +12,7 @@
 	<!-- Uncomment the changeset below if you want to make the Item class persistable, 
 		see also Item and LagTimeReportDaoTest -->
 
-	<changeSet id="lagtimereport-2017-29-03-09-25" author="ossemaeb">
+	<changeSet id="lagtimereport-2017-04-04-09-26" author="ossemaeb">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="lagtimereport_setup" />
@@ -66,7 +66,7 @@
 
 	</changeSet>
 	
-	<changeSet author="ossemaeb (generated)" id="1227303685425-13">
+	<changeSet author="ossemaeb (generated)" id="1227303685425-16">
         <createTable tableName="lagtimereport_forms">
             <column name="lagtimereport_id" type="int">
                 <constraints nullable="false"/>
@@ -76,5 +76,48 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="lagtimereport-2017-29-03-09-27" author="ossemaeb">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="lagtimereport_report"/></not>
+		</preConditions>
+		<comment>
+			Create Lag Time Report
+		</comment>
+		<createTable tableName="lagtimereport_report">
+			<column name="report_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="lagtimereport_id" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="due_date" type="datetime" >
+				<constraints nullable="false"/>
+			</column>
+			<column name="start_date" type="datetime" >
+				<constraints nullable="false"/>
+			</column>
+			<column name="end_date" type="datetime" >
+				<constraints nullable="false"/>
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true"/>
+			</column>
+			<column name="creator" type="int" >
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime" >
+				<constraints nullable="false"/>
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="tinyint" defaultValueNumeric="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" defaultValue="null"/>
+		</createTable>
+		</changeSet>
 
 </databaseChangeLog>

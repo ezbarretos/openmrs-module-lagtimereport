@@ -10,6 +10,7 @@
 package org.openmrs.module.lagtimereport.web.controller;
 
 import java.beans.PropertyEditorSupport;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,13 +89,13 @@ public class LagTimeReportController {
 	public LagTimeReportSetup getLagTimeReportSetup(
 	        @RequestParam(value = "lagtimereportId", required = false) Integer lagtimereportId) {
 		if (lagtimereportId != null) {
-			LagTimeReportSetup lagTimeTeportSetup = lagtimeService.getLagTimeReportSetup(lagtimereportId);
+			LagTimeReportSetup lagTimeReportSetup = lagtimeService.getLagTimeReportSetup(lagtimereportId);
 			
-			return lagTimeTeportSetup;
+			return lagTimeReportSetup;
 		}
-		LagTimeReportSetup lagTimeTeportSetup = new LagTimeReportSetup();
+		LagTimeReportSetup lagTimeReportSetup = new LagTimeReportSetup();
 		
-		return lagTimeTeportSetup;
+		return lagTimeReportSetup;
 	}
 	
 	@ModelAttribute("listLagTimeReportForms")
@@ -117,7 +118,24 @@ public class LagTimeReportController {
 					log.fatal(result);
 					return null;
 				}*/
-		lagtimeService.saveLagTimeReportSetup(lagTimeReportSetup);
+		LagTimeReportSetup updateLagtimereport = new LagTimeReportSetup();
+		double version = 0;
+		double updateVersion = 0;
+		
+		DecimalFormat df = new DecimalFormat("#.#");
+		if (lagTimeReportSetup.getLagTimeReportId() != null) {
+			version = lagTimeReportSetup.getVersion() + 0.1;
+			updateVersion = Double.parseDouble(df.format(version));
+			updateLagtimereport.setName(lagTimeReportSetup.getName());
+			updateLagtimereport.setDescription(lagTimeReportSetup.getDescription());
+			updateLagtimereport.setForms(lagTimeReportSetup.getForms());
+			updateLagtimereport.setVersion(updateVersion);
+			lagTimeReportSetup.setRetired(true);
+			lagtimeService.saveLagTimeReportSetup(updateLagtimereport);
+		} else {
+			lagtimeService.saveLagTimeReportSetup(lagTimeReportSetup);
+		}
+		
 		httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "lagtimereport.saved");
 		
 		//}

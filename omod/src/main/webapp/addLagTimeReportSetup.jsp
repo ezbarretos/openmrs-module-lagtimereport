@@ -119,7 +119,6 @@
 										${lagtime.formId == forms.formId ? "checked":""} />
 									</td>
 									<td>${forms.name }</td>
-
 								</tr>
 								<c:set var="formAlreadyExists" value="${true}" />
 							</c:if>

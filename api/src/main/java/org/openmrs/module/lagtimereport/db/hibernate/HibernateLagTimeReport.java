@@ -1,11 +1,5 @@
 /**
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
- * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
- *
- * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
- * graphic logo is a trademark of OpenMRS Inc.
+ * 
  */
 package org.openmrs.module.lagtimereport.db.hibernate;
 
@@ -20,13 +14,17 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.api.APIException;
 import org.openmrs.api.db.DAOException;
+import org.openmrs.module.lagtimereport.LagTimeReport;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
-import org.openmrs.module.lagtimereport.db.LagTimeReportSetupDao;
+import org.openmrs.module.lagtimereport.db.LagTimeReportDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository("lagtimereport.LagTimeReportSetupDao")
-public class HibernateLagTimeReportSetupDao implements LagTimeReportSetupDao {
+/**
+ * @author ossemaeb
+ */
+@Repository("lagtimereport.LagTimeReportDao")
+public class HibernateLagTimeReport implements LagTimeReportDao {
 	
 	protected final Log log = LogFactory.getLog(this.getClass());
 	
@@ -42,14 +40,14 @@ public class HibernateLagTimeReportSetupDao implements LagTimeReportSetupDao {
 	}
 	
 	@Override
-	public LagTimeReportSetup saveLagTimeReportSetup(LagTimeReportSetup lagTimeReport) throws DAOException {
+	public LagTimeReport saveLagTimeReport(LagTimeReport lagTimeReport) throws DAOException {
 		sessionFactory.getCurrentSession().saveOrUpdate(lagTimeReport);
 		return lagTimeReport;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<LagTimeReportSetup> getAllLagTimeReportSetup() throws DAOException {
+	public List<LagTimeReport> getAllLagTimeReport() throws DAOException {
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(LagTimeReportSetup.class);
 		c.addOrder(Order.asc("name"));
 		return c.list();
@@ -57,7 +55,7 @@ public class HibernateLagTimeReportSetupDao implements LagTimeReportSetupDao {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<LagTimeReportSetup> getAllLagTimeReportSetup(Boolean includeRetired) throws DAOException {
+	public List<LagTimeReport> getAllLagTimeReport(Boolean includeRetired) throws DAOException {
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(LagTimeReportSetup.class);
 		c.addOrder(Order.asc("name"));
 		if (!includeRetired)
@@ -66,43 +64,44 @@ public class HibernateLagTimeReportSetupDao implements LagTimeReportSetupDao {
 	}
 	
 	@Override
-	public LagTimeReportSetup getLagTimeReportSetup(Integer lagTimeReportById) throws DAOException {
-		return (LagTimeReportSetup) sessionFactory.getCurrentSession().get(LagTimeReportSetup.class, lagTimeReportById);
+	public LagTimeReport getLagTimeReport(Integer lagTimeReportById) throws DAOException {
+		return (LagTimeReport) sessionFactory.getCurrentSession().get(LagTimeReport.class, lagTimeReportById);
 	}
 	
 	@Override
-	public LagTimeReportSetup getLagTimeReportSetupByUuid(String uuid) throws APIException {
-		return (LagTimeReportSetup) sessionFactory.getCurrentSession().createCriteria(LagTimeReportSetup.class)
+	public LagTimeReport getLagTimeReportByUuid(String uuid) throws APIException {
+		return (LagTimeReport) sessionFactory.getCurrentSession().createCriteria(LagTimeReport.class)
 		        .add(Restrictions.eq("uuid", uuid)).uniqueResult();
 	}
 	
 	@Override
-	public LagTimeReportSetup updateLagTimeReportSetup(LagTimeReportSetup lagTimeReport) throws APIException {
+	public LagTimeReport updateLagTimeReport(LagTimeReport lagTimeReport) throws APIException {
 		sessionFactory.getCurrentSession().update(lagTimeReport);
 		return lagTimeReport;
 	}
 	
 	@Override
-	public LagTimeReportSetup getLagTimeReportSetupByName(String name) throws APIException {
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(LagTimeReportSetup.class);
+	public LagTimeReport getLagTimeReportByName(String name) throws APIException {
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(LagTimeReport.class);
 		crit.add(Restrictions.eq("retired", false));
 		crit.add(Restrictions.eq("name", name));
-		LagTimeReportSetup agTimeReportSetup = (LagTimeReportSetup) crit.uniqueResult();
+		LagTimeReport lagTimeReport = (LagTimeReport) crit.uniqueResult();
 		
-		return agTimeReportSetup;
+		return lagTimeReport;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<LagTimeReportSetup> findLagTimeReportSetup(String name) throws APIException {
-		return sessionFactory.getCurrentSession().createCriteria(LagTimeReportSetup.class)
+	public List<LagTimeReport> findLagTimeReport(String name) throws APIException {
+		return sessionFactory.getCurrentSession().createCriteria(LagTimeReport.class)
 		        .add(Restrictions.ilike("name", name, MatchMode.START)).addOrder(Order.asc("name"))
 		        .addOrder(Order.asc("retired")).list();
 	}
 	
 	@Override
-	public void deleteLagTimeReportSetup(LagTimeReportSetup lagTimeReport) throws APIException {
+	public void deleteLagTimeReport(LagTimeReport lagTimeReport) throws APIException {
 		sessionFactory.getCurrentSession().delete(lagTimeReport);
 		
 	}
+	
 }

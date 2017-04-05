@@ -32,6 +32,7 @@
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
 		LagTimeReportSetup.hbm.xml
+		LagTimeReport.hbm.xml
 	</mappingFiles>
 	
 	<!-- AOP
