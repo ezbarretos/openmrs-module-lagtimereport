@@ -16,7 +16,6 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Form;
-import org.openmrs.api.FormService;
 import org.openmrs.module.lagtimereport.FormValue;
 import org.openmrs.module.lagtimereport.LagTimeReport;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
@@ -50,9 +49,6 @@ public class LagTimeReportAddController {
 	@Autowired
 	LagTimeReportSetupService lagtimeService;
 	
-	@Autowired
-	FormService formService;
-	
 	public LagTimeReportService getReportService() {
 		return reportService;
 	}
@@ -69,14 +65,6 @@ public class LagTimeReportAddController {
 		this.lagtimeService = lagtimeService;
 	}
 	
-	public FormService getFormService() {
-		return formService;
-	}
-	
-	public void setFormService(FormService formService) {
-		this.formService = formService;
-	}
-	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(LagTimeReport.class, new LagTimeReportEditor());
@@ -89,14 +77,14 @@ public class LagTimeReportAddController {
 			}
 		});
 		
-		binder.registerCustomEditor(Form.class, new PropertyEditorSupport() {
-			
-			@Override
-			public void setAsText(String text) {
-				Form form = formService.getForm(Integer.parseInt(text));
-				super.setValue(form);
-			}
-		});
+		/*		binder.registerCustomEditor(Form.class, new PropertyEditorSupport() {
+					
+					@Override
+					public void setAsText(String text) {
+						Form form = formService.getForm(Integer.parseInt(text));
+						super.setValue(form);
+					}
+				});*/
 	}
 	
 	@RequestMapping(value = "/module/lagtimereport/addLagtimereport.form", method = RequestMethod.GET)
