@@ -6,15 +6,29 @@
 <hibernate-mapping package="org.openmrs.module.lagtimereport">
 	<class name="LagTimeReport" table="lagtimereport_report">
 		<id name="reportId" type="int" column="report_id" unsaved-value="0">
-			<generator class="native" />
+			<generator class="native">
+				<param name="sequence">report_id_seq</param>
+			</generator>
 		</id>
 		
 		<discriminator column="report_id" insert="false" />
 		
-		<many-to-one name="lagTimeReportSetup" class="LagTimeReportSetup" column="lagtimereport_id" not-null="true" />
-		<property name="dueDate" type="java.util.Date" column="due_date" not-null="true" length="19" />
+		<many-to-one name="lagtimereportSetup" class="LagTimeReportSetup" column="lagtimereport_id" not-null="true" fetch="join"/>
+		<property name="dueDate" type="java.util.Date" column="due_date" length="19" />
 		<property name="startDate" type="java.util.Date" column="start_date" length="19"/>
 		<property name="endDate" type="java.util.Date" column="end_date" length="19" />
+		
+		<set name="formValue" table="lagtimereport_value" cascade="all">
+            <key column="report_id"/>
+            <composite-element class="FormValue" >
+                <parent name="LagTimeReport" />
+               <property name="forms" type="int" column="form_id"></property>
+                <property name="numberOfForm" type="int">
+                    <column name="number_form"/>
+                </property>
+            </composite-element>
+          </set>  
+		
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
 		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
 		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19"/>

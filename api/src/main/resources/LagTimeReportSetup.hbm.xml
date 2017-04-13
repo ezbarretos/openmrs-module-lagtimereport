@@ -41,7 +41,7 @@
 
 		<property name="retired" type="boolean" length="1" not-null="true" />
 
-		<set name="forms" table="lagtimereport_forms" cascade="all">
+		<set name="forms" table="lagtimereport_forms" cascade="all" lazy="true">
 			<key column="lagtimereport_id" />
 			<many-to-many column="form_id" class="org.openmrs.Form" />
 		</set>

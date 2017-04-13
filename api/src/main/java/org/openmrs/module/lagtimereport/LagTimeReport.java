@@ -4,8 +4,9 @@
 package org.openmrs.module.lagtimereport;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
+import java.util.HashSet;
 
 import org.openmrs.BaseOpenmrsData;
 
@@ -27,9 +28,13 @@ public class LagTimeReport extends BaseOpenmrsData implements Serializable {
 	
 	private Date endDate;
 	
-	private LagTimeReportSetup lagTimeReportSetup;
+	private LagTimeReportSetup lagtimereportSetup;
 	
-	private Set<Integer> numberOfPaper;
+	//private Collection<Integer> forms;
+	
+	//private Collection<Integer> numberOfForm;
+	
+	private Collection<FormValue> formValue = new HashSet<FormValue>();
 	
 	public Integer getReportId() {
 		return reportId;
@@ -75,20 +80,20 @@ public class LagTimeReport extends BaseOpenmrsData implements Serializable {
 		this.endDate = endDate;
 	}
 	
-	public LagTimeReportSetup getLagTimeReportSetup() {
-		return lagTimeReportSetup;
+	public LagTimeReportSetup getLagtimereportSetup() {
+		return lagtimereportSetup;
 	}
 	
-	public void setLagTimeReportSetup(LagTimeReportSetup lagTimeReportSetup) {
-		this.lagTimeReportSetup = lagTimeReportSetup;
+	public void setLagtimereportSetup(LagTimeReportSetup lagtimereportSetup) {
+		this.lagtimereportSetup = lagtimereportSetup;
 	}
 	
-	public Set<Integer> getNumberOfPaper() {
-		return numberOfPaper;
+	public Collection<FormValue> getFormValue() {
+		return formValue;
 	}
 	
-	public void setNumberOfPaper(Set<Integer> numberOfPaper) {
-		this.numberOfPaper = numberOfPaper;
+	public void setFormValue(Collection<FormValue> formValue) {
+		this.formValue = formValue;
 	}
 	
 }

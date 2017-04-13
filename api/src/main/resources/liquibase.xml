@@ -12,7 +12,7 @@
 	<!-- Uncomment the changeset below if you want to make the Item class persistable, 
 		see also Item and LagTimeReportDaoTest -->
 
-	<changeSet id="lagtimereport-2017-04-04-09-26" author="ossemaeb">
+	<changeSet id="lagtimereport_setup-2017-04-04-09-29" author="ossemaeb">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="lagtimereport_setup" />
@@ -66,7 +66,12 @@
 
 	</changeSet>
 	
-	<changeSet author="ossemaeb (generated)" id="1227303685425-16">
+	<changeSet author="ossemaeb" id="lagtimereport_forms-2017-29-03-09-29">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="lagtimereport_forms" />
+			</not>
+		</preConditions>
         <createTable tableName="lagtimereport_forms">
             <column name="lagtimereport_id" type="int">
                 <constraints nullable="false"/>
@@ -77,7 +82,7 @@
         </createTable>
     </changeSet>
     
-    <changeSet id="lagtimereport-2017-29-03-09-27" author="ossemaeb">
+    <changeSet id="lagtimereport_report-2017-29-03-09-29" author="ossemaeb">
 		<preConditions onFail="MARK_RAN">
 			<not><tableExists tableName="lagtimereport_report"/></not>
 		</preConditions>
@@ -119,5 +124,24 @@
 			<column name="void_reason" type="varchar(255)" defaultValue="null"/>
 		</createTable>
 		</changeSet>
+		
+		<changeSet author="ossemaeb" id="lagtimereport_value-2017-29-04-09-10">
+			<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="lagtimereport_value" />
+			</not>
+		</preConditions>
+        <createTable tableName="lagtimereport_value">
+            <column name="report_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="form_id" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number_form" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>
