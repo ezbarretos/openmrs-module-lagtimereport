@@ -94,7 +94,6 @@ public class LagTimeReportServiceImpl extends BaseOpenmrsService implements LagT
 	@Override
 	public LagTimeReport unretireLagTimeReport(LagTimeReport lagTimeReport) throws APIException {
 		lagTimeReport.setVoided(false);
-		;
 		return saveLagTimeReport(lagTimeReport);
 	}
 	

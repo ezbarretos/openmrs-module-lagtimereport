@@ -105,9 +105,9 @@ public class LagTimeReportAddController {
 	}
 	
 	@ModelAttribute("lagTimeReport")
-	public LagTimeReport getLagTimeReport(@RequestParam(value = "lagtimereportId", required = false) Integer lagtimereportId) {
-		if (lagtimereportId != null) {
-			LagTimeReport lagTimeReport = reportService.getLagTimeReport(lagtimereportId);
+	public LagTimeReport getLagTimeReport(@RequestParam(value = "reportId", required = false) Integer reportId) {
+		if (reportId != null) {
+			LagTimeReport lagTimeReport = reportService.getLagTimeReport(reportId);
 			
 			return lagTimeReport;
 		}
@@ -153,7 +153,7 @@ public class LagTimeReportAddController {
 		for (int i = 0; i < forms.length; i++) {
 			FormValue formValue = new FormValue();
 			formValue.setForms(Integer.parseInt(forms[i]));
-			if (numberOfForm[i].isEmpty())
+			if (numberOfForm[i] == "")
 				formValue.setNumberOfForm(0);
 			formValue.setNumberOfForm(Integer.parseInt(numberOfForm[i]));
 			formValues.add(formValue);

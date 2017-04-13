@@ -15,7 +15,6 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.api.APIException;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.lagtimereport.LagTimeReport;
-import org.openmrs.module.lagtimereport.LagTimeReportSetup;
 import org.openmrs.module.lagtimereport.db.LagTimeReportDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -48,18 +47,18 @@ public class HibernateLagTimeReport implements LagTimeReportDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<LagTimeReport> getAllLagTimeReport() throws DAOException {
-		Criteria c = sessionFactory.getCurrentSession().createCriteria(LagTimeReportSetup.class);
-		c.addOrder(Order.asc("name"));
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(LagTimeReport.class);
+		//c.addOrder(Order.asc("name"));
 		return c.list();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<LagTimeReport> getAllLagTimeReport(Boolean includeRetired) throws DAOException {
-		Criteria c = sessionFactory.getCurrentSession().createCriteria(LagTimeReportSetup.class);
-		c.addOrder(Order.asc("name"));
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(LagTimeReport.class);
+		//c.addOrder(Order.asc("name"));
 		if (!includeRetired)
-			c.add(Restrictions.eq("retired", false));
+			c.add(Restrictions.eq("voided", false));
 		return c.list();
 	}
 	
@@ -83,8 +82,8 @@ public class HibernateLagTimeReport implements LagTimeReportDao {
 	@Override
 	public LagTimeReport getLagTimeReportByName(String name) throws APIException {
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(LagTimeReport.class);
-		crit.add(Restrictions.eq("retired", false));
-		crit.add(Restrictions.eq("name", name));
+		crit.add(Restrictions.eq("voided", false));
+		//crit.add(Restrictions.eq("name", name));
 		LagTimeReport lagTimeReport = (LagTimeReport) crit.uniqueResult();
 		
 		return lagTimeReport;
@@ -95,7 +94,7 @@ public class HibernateLagTimeReport implements LagTimeReportDao {
 	public List<LagTimeReport> findLagTimeReport(String name) throws APIException {
 		return sessionFactory.getCurrentSession().createCriteria(LagTimeReport.class)
 		        .add(Restrictions.ilike("name", name, MatchMode.START)).addOrder(Order.asc("name"))
-		        .addOrder(Order.asc("retired")).list();
+		        .addOrder(Order.asc("voided")).list();
 	}
 	
 	@Override

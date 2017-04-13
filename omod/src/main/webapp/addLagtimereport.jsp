@@ -22,16 +22,22 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		datepicker();
-		//forms();
-		test();
+		enterPaperFields();
+		redirectCancel();
 
 	});
 
 	function datepicker() {
 		$(".datepick").datepicker();
 	};
+	
+	function redirectCancel() {
+		$("#cancel").click(function() {
+			window.location.href = "${pageContext.request.contextPath}/module/lagtimereport/manageLagtimereport.list";
+		});
+	}
 
-	function test() {
+	function enterPaperFields() {
 		$("select#lagtimereportId").change(function() {
 			var lagtimereportId = $('#lagtimereportId').val();
 			$.ajax({
@@ -44,8 +50,8 @@
 				success : function(result) {
 					var trHTML = '';
 					$.each(result, function(index, item) {
-						trHTML += '<tr><td><spring:bind path="lagTimeReport.formValue"><input type="hidden" name="forms" value="'+index+'"/></spring:bind></td>'
-							+ item +
+						trHTML += '<tr><td>'+item+'</td><td><spring:bind path="lagTimeReport.formValue"><input type="hidden" name="forms" value="'+index+'"/></spring:bind></td>'
+							+
 						'<td><spring:bind path="lagTimeReport.formValue"><input type="text" name="numberOfForm"/></spring:bind></td><tr>';
 					});
 
@@ -86,18 +92,21 @@
 							</spring:bind></td>
 					</tr>
 					<tr>
-						<td><spring:bind path="lagTimeReport.dueDate">Report Due Date<input type="text" name="dueDate"
+						<td><spring:message code="lagtimereport.report.due.date" /></td>
+						<td><spring:bind path="lagTimeReport.dueDate"><input type="text" name="dueDate"
 							id="dueDate" class="datepick" /><img
 							src="${pageContext.request.contextPath}/moduleResources/lagtimereport/images/calendarIcon.png"
 							class="calendarIcon" alt="" onclick="datepicker()" /></spring:bind></td>
 					</tr>
 					<tr>
-						<td><spring:bind path="lagTimeReport.startDate">Start Date<input type="text" name="startDate"
+						<td><spring:message code="lagtimereport.report.start.date" /></td>
+						<td><spring:bind path="lagTimeReport.startDate"><input type="text" name="startDate"
 							id="startDate" class="datepick"/> <img
 							src="${pageContext.request.contextPath}/moduleResources/lagtimereport/images/calendarIcon.png"
 							class="calendarIcon" alt="" /></spring:bind></td>
 							
-						<td><spring:bind path="lagTimeReport.endDate">End Date<input type="text" name="endDate" id="endDate" 
+						<td><spring:message code="lagtimereport.report.end.date" /></td>
+						<td><spring:bind path="lagTimeReport.endDate"><input type="text" name="endDate" id="endDate" 
 						class="datepick"/>
 							<img
 							src="${pageContext.request.contextPath}/moduleResources/lagtimereport/images/calendarIcon.png"
@@ -107,8 +116,7 @@
 				</table>
 			</div>
 			</br> </br>
-			<p>Please enter the total number of paper encounter forms filled that occurred between
-			Start Date and End Date for all encounter locations</p>
+			<p><spring:message code="lagtimereport.report.info" /></p>
 			<div id="formValue"></div>
 			
 			</br> </br>
