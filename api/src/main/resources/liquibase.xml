@@ -125,7 +125,7 @@
 		</createTable>
 		</changeSet>
 		
-		<changeSet author="ossemaeb" id="lagtimereport_value-2017-29-04-09-10">
+		<changeSet author="ossemaeb" id="lagtimereport_value-2017-29-04-12-10">
 			<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="lagtimereport_value" />
