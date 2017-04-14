@@ -18,6 +18,19 @@
 	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/js/jquery.dataTables.min.js" />
 <openmrs:htmlInclude
 	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/js/dataTable.js" />
+	
+	<script type="text/javascript">
+	$(document).ready(function() {
+		redirectExit();
+	});
+
+	function redirectExit() {
+		$("#exit").click(function() {
+			window.location.href = "${pageContext.request.contextPath}/module/lagtimereport/manageLagtimereport.list";
+		});
+	}
+
+</script>
 
 <div class="widget">
 	<h2>
@@ -61,18 +74,33 @@
 						<th><spring:message code="lagtimereport.reporting.median.lagtimes" /></th>
 					</tr>
 				</thead>
-
-				<c:forEach var="report" items="${printReport.formValue}">
+				<c:forEach var="formNames" items="${printReport.lagtimereportSetup.forms}">
+					<tr>
+						<td>${formNames.name}</td>
+						
+						<c:forEach var="report" items="${printReport.formValue}">
+						<td>${report.numberOfForm}</td>
+				</c:forEach>
+				<c:forEach var="print" items="${printEncounter }">
+						<td>${print.value}</td>
+				</c:forEach>
+				</tr>
+				</c:forEach>
+								
+			</table>
+			<%-- <table>
+			<c:forEach var="print" items="${printEncounter }">
 					<tr>
 						<td>A</td>
-						<td>${report.numberOfForm}</td>
-						<td>A</td>
+						<td>${print.key}</td>
+						<td>${print.value}</td>
 						<td>A</td>
 						<td>A</td>
 						<td>A</td>
 					</tr>
-				</c:forEach>
-			</table>
+					
+				</c:forEach> 
+		</table> --%>
 			<input type="submit"
 				value="<openmrs:message code="lagtimereport.reporting.exit"/>" name="exit" id="exit"/>
 	</div>
