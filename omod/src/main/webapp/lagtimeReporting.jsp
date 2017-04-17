@@ -74,33 +74,32 @@
 						<th><spring:message code="lagtimereport.reporting.median.lagtimes" /></th>
 					</tr>
 				</thead>
-				<c:forEach var="formNames" items="${printReport.lagtimereportSetup.forms}">
-					<tr>
-						<td>${formNames.name}</td>
-						
-						<c:forEach var="report" items="${printReport.formValue}">
-						<td>${report.numberOfForm}</td>
-				</c:forEach>
-				<c:forEach var="print" items="${printEncounter }">
-						<td>${print.value}</td>
-				</c:forEach>
-				</tr>
+				
+				<c:forEach var="reporting" items="${reporting }">
+				<tr>
+						<td>
+							${reporting.forms}
+						</td>
+						<td>
+							${reporting.formValue}
+						</td>
+						<td>
+							${reporting.countEncounter}
+						</td>
+						<td>
+							${reporting.percentageEntered}
+						</td>
+						<td>
+							${reporting.averageDays}
+						</td>
+						<td>
+							${reporting.medianDays}
+						</td>
+						</tr>
 				</c:forEach>
 								
 			</table>
-			<%-- <table>
-			<c:forEach var="print" items="${printEncounter }">
-					<tr>
-						<td>A</td>
-						<td>${print.key}</td>
-						<td>${print.value}</td>
-						<td>A</td>
-						<td>A</td>
-						<td>A</td>
-					</tr>
-					
-				</c:forEach> 
-		</table> --%>
+			
 			<input type="submit"
 				value="<openmrs:message code="lagtimereport.reporting.exit"/>" name="exit" id="exit"/>
 	</div>
