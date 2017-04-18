@@ -208,13 +208,4 @@ public class LagTimeReportingController {
 		return lagTimeReports;
 	}
 	
-	// download PDF
-	//@RequestMapping(value = "/module/lagtimereport/downloadReporting", method = RequestMethod.GET)
-	public ModelAndView retireLagTimeReportSetup() {
-		ModelAndView m = new ModelAndView("lagTimeReportPDFView");
-		LagTimeReport lagTimeReport = reportService.getLagTimeReport(23);
-		m.getModelMap().addAttribute("printReports", lagTimeReport);
-		return m;
-	}
-	
 }

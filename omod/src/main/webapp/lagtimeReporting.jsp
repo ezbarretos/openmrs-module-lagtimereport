@@ -41,6 +41,9 @@
 			<tr>
 				<td><spring:message code="lagtimereport.reporting.setup.name" />:</td>
 				<td>${printReport.lagtimereportSetup.name}</td>
+				<td>&nbsp; &nbsp;</td>
+				<td>
+				<h4><a href="${pageContext.request.contextPath}/module/lagtimereport/downloadReporting.form?reportId=${printReport.reportId}">Download Report</a></h4></td>
 			</tr>
 			<tr>
 				<td><spring:message code="lagtimereport.revision" />:</td>
@@ -103,7 +106,6 @@
 			<input type="submit"
 				value="<openmrs:message code="lagtimereport.reporting.exit"/>" name="exit" id="exit"/>
 				
-				<h3><a href="${pageContext.request.contextPath}/module/lagtimereport/downloadReporting.form">Download PDF Document</a></h3>
 	</div>
 		
 </div>
