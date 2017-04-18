@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -57,7 +59,7 @@ public class ReportDownloadController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private String file = "c:\\LagTimeRepot.pdf";
+	private String file = "LagTimeRepot.pdf";
 	
 	@Autowired
 	LagTimeReportService reportService;
@@ -114,7 +116,7 @@ public class ReportDownloadController {
 			e.printStackTrace();
 		}
 		
-		File file = new File("c://LagTimeRepot.pdf");
+		File file = new File("LagTimeRepot.pdf");
 		InputStream is = new FileInputStream(file);
 		
 		response.setContentType("application/pdf");

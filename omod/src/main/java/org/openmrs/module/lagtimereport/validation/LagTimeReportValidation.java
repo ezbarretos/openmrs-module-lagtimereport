@@ -26,9 +26,9 @@ public class LagTimeReportValidation implements Validator {
 		if (lagtimereport == null) {
 			errors.reject("lagTimeTeport", "lagtimereport.error.general");
 		}
-		ValidationUtils.rejectIfEmpty(errors, "dueDate", "lagtimereport.error.dueDate");
-		ValidationUtils.rejectIfEmpty(errors, "startDate", "lagtimereport.error.startDate");
-		ValidationUtils.rejectIfEmpty(errors, "endDate", "lagtimereport.error.endDate");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dueDate", "lagtimereport.error.dueDate");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startDate", "lagtimereport.error.startDate");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "endDate", "lagtimereport.error.endDate");
 		
 	}
 	

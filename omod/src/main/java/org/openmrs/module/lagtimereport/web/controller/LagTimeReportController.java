@@ -23,6 +23,7 @@ import org.openmrs.api.FormService;
 import org.openmrs.module.lagtimereport.LagTimeReportSetup;
 import org.openmrs.module.lagtimereport.propertyeditor.LagTimeReportSetupEditor;
 import org.openmrs.module.lagtimereport.service.LagTimeReportSetupService;
+import org.openmrs.module.lagtimereport.validation.LagTimeReportSetupValidation;
 import org.openmrs.validator.ValidateUtil;
 import org.openmrs.web.WebConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,10 +115,10 @@ public class LagTimeReportController {
 		//if (Context.isAuthenticated()) {
 		ValidateUtil.validate(lagTimeReportSetup, result);
 		
-		/*		if (result.hasErrors()) {
-					log.fatal(result);
-					return null;
-				}*/
+		/*if (result.hasErrors()) {
+			log.fatal(result);
+			return "addLagTimeReportSetup";
+		}*/
 		LagTimeReportSetup updateLagtimereport = new LagTimeReportSetup();
 		double version = 0;
 		double updateVersion = 0;
