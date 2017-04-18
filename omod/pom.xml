@@ -29,6 +29,11 @@
 			<scope>provided</scope>
 			<classifier>tests</classifier>
 		</dependency>
+		<dependency>
+	    <groupId>com.itextpdf</groupId>
+		    <artifactId>itextpdf</artifactId>
+		    <version>5.4.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

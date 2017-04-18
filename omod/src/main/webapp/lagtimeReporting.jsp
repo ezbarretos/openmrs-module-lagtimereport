@@ -102,6 +102,8 @@
 			
 			<input type="submit"
 				value="<openmrs:message code="lagtimereport.reporting.exit"/>" name="exit" id="exit"/>
+				
+				<h3><a href="${pageContext.request.contextPath}/module/lagtimereport/downloadReporting.form">Download PDF Document</a></h3>
 	</div>
 		
 </div>

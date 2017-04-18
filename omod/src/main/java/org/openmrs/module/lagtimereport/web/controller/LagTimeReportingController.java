@@ -6,12 +6,11 @@ package org.openmrs.module.lagtimereport.web.controller;
 import java.beans.PropertyEditorSupport;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +26,6 @@ import org.openmrs.module.lagtimereport.service.LagTimeReportService;
 import org.openmrs.module.lagtimereport.service.LagTimeReportSetupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -139,6 +137,9 @@ public class LagTimeReportingController {
 		
 		Map<Integer, Integer> encounterCount = new HashMap<Integer, Integer>();
 		Map<Integer, Integer> countDays = new HashMap<Integer, Integer>();
+		Map<Integer, List<Integer>> medianDaysAux = new HashMap<Integer, List<Integer>>();
+		Map<Integer, Integer> medianDays = new HashMap<Integer, Integer>();
+		
 		int sumDays = 0;
 		for (Encounter encounter : encounters) {
 			Integer count = encounterCount.get(encounter.getForm().getId());
@@ -152,6 +153,20 @@ public class LagTimeReportingController {
 			int convertToDays = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 			sumDays += convertToDays;
 			countDays.put(encounter.getForm().getId(), sumDays);
+			
+			List<Integer> dateDiff = medianDaysAux.get(encounter.getForm().getId());
+			if (dateDiff == null) {
+				dateDiff = new ArrayList<Integer>();
+			}
+			dateDiff.add(convertToDays);
+			medianDaysAux.put(encounter.getForm().getId(), dateDiff);
+			
+			Collections.sort(medianDaysAux.get(encounter.getForm().getId()));
+			int formId = encounter.getForm().getId();
+			int list = medianDaysAux.get(formId).size();
+			int middle = (list / 2);
+			
+			medianDays.put(encounter.getForm().getId(), middle);
 		}
 		
 		List<FormValue> formValues = new ArrayList<FormValue>();
@@ -174,7 +189,7 @@ public class LagTimeReportingController {
 				Integer averageDays = countDays.get(formId) / encounterCount.get(formId);
 				
 				LagtimeReporting reporting = new LagtimeReporting(form.getName(), formValue, encounterCount.get(formId),
-				        percentageEntered, averageDays, sumDays);
+				        percentageEntered, averageDays, medianDays.get(formId));
 				list.add(reporting);
 			}
 			
@@ -194,16 +209,12 @@ public class LagTimeReportingController {
 	}
 	
 	// download PDF
-	@RequestMapping(value = "/module/lagtimereport/lagtimeReporting", method = RequestMethod.POST)
-	public String retireLagTimeReportSetup(HttpServletRequest request, ModelMap model) {
-		String reason = request.getParameter("reason");
-		if (request.getParameterValues("checkRetire") != null) {
-			for (String id : request.getParameterValues("checkRetire")) {
-				LagTimeReportSetup lagTimeReport = lagtimeService.getLagTimeReportSetup(Integer.parseInt(id));
-				lagtimeService.retireLagTimeReportSetup(lagTimeReport, reason);
-			}
-		}
-		return "redirect:lagtimeReporting.list";
+	//@RequestMapping(value = "/module/lagtimereport/downloadReporting", method = RequestMethod.GET)
+	public ModelAndView retireLagTimeReportSetup() {
+		ModelAndView m = new ModelAndView("lagTimeReportPDFView");
+		LagTimeReport lagTimeReport = reportService.getLagTimeReport(23);
+		m.getModelMap().addAttribute("printReports", lagTimeReport);
+		return m;
 	}
 	
 }
