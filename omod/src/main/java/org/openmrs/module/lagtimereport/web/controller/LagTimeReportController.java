@@ -24,7 +24,6 @@ import org.openmrs.module.lagtimereport.LagTimeReportSetup;
 import org.openmrs.module.lagtimereport.propertyeditor.LagTimeReportSetupEditor;
 import org.openmrs.module.lagtimereport.service.LagTimeReportSetupService;
 import org.openmrs.module.lagtimereport.validation.LagTimeReportSetupValidation;
-import org.openmrs.validator.ValidateUtil;
 import org.openmrs.web.WebConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +34,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
 
 /**
  * This class configured as controller using annotation and mapped with the URL of
@@ -86,7 +86,7 @@ public class LagTimeReportController {
 		
 	}
 	
-	@ModelAttribute("lagTimeTeportSetup")
+	@ModelAttribute("lagTimeReportSetup")
 	public LagTimeReportSetup getLagTimeReportSetup(
 	        @RequestParam(value = "lagtimereportId", required = false) Integer lagtimereportId) {
 		if (lagtimereportId != null) {
@@ -107,18 +107,17 @@ public class LagTimeReportController {
 	
 	@RequestMapping(value = "/module/lagtimereport/addLagTimeReportSetup", method = RequestMethod.POST)
 	public String onSubmit(HttpServletRequest request,
-	        @ModelAttribute("lagTimeTeportSetup") LagTimeReportSetup lagTimeReportSetup, BindingResult result)
-	        throws Exception {
-		
+	        @ModelAttribute("lagTimeReportSetup") LagTimeReportSetup lagTimeReportSetup, BindingResult result,
+	        SessionStatus status) throws Exception {
 		HttpSession httpSession = request.getSession();
-		
 		//if (Context.isAuthenticated()) {
-		ValidateUtil.validate(lagTimeReportSetup, result);
+		LagTimeReportSetupValidation validator = new LagTimeReportSetupValidation();
+		validator.validate(lagTimeReportSetup, result);
 		
-		/*if (result.hasErrors()) {
+		if (result.hasErrors()) {
 			log.fatal(result);
-			return "addLagTimeReportSetup";
-		}*/
+			return "redirect:addLagTimeReportSetup.form";
+		}
 		LagTimeReportSetup updateLagtimereport = new LagTimeReportSetup();
 		double version = 0;
 		double updateVersion = 0;

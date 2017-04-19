@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface LagTimeReportSetupService extends OpenmrsService {
 	
-	@Authorized(LagTimeReportConfig.MODULE_PRIVILEGE)
+	@Authorized(LagTimeReportConfig.PRIVILEGE_SETUP_REPORT)
 	public LagTimeReportSetup saveLagTimeReportSetup(LagTimeReportSetup lagTimeReportSetup) throws APIException;
 	
 	public LagTimeReportSetup getLagTimeReportSetup(Integer lagTimeReportSetupId) throws APIException;
@@ -29,12 +29,15 @@ public interface LagTimeReportSetupService extends OpenmrsService {
 	
 	public LagTimeReportSetup getLagTimeReportSetup(String name) throws APIException;
 	
+	@Authorized(LagTimeReportConfig.PRIVILEGE_VIEW_SETUP_REPORT)
 	public List<LagTimeReportSetup> getAllLagTimeReportSetups() throws APIException;
 	
+	@Authorized(LagTimeReportConfig.PRIVILEGE_VIEW_SETUP_REPORT)
 	public List<LagTimeReportSetup> getAllLagTimeReportSetups(boolean includeRetired) throws APIException;
 	
 	public List<LagTimeReportSetup> findLagTimeReportSetups(String name) throws APIException;
 	
+	@Authorized(LagTimeReportConfig.PRIVILEGE_SETUP_RETIRE_REPORT)
 	public LagTimeReportSetup retireLagTimeReportSetup(LagTimeReportSetup lagTimeReportSetup, String reason)
 	        throws APIException;
 	

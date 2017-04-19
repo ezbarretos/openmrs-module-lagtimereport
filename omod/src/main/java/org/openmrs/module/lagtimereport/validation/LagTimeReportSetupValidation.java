@@ -34,7 +34,7 @@ public class LagTimeReportSetupValidation implements Validator {
 		LagTimeReportSetup lagtimereport = (LagTimeReportSetup) obj;
 		
 		if (lagtimereport == null) {
-			errors.reject("lagTimeTeportSetup", "lagtimereport.error.general");
+			errors.reject("lagTimeReportSetup", "lagtimereport.error.general");
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "lagtimereport.error.name");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "lagtimereport.error.description");

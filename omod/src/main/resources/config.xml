@@ -43,14 +43,32 @@
 	 /AOP -->
 	
 	
-	<!-- Required Privileges 
+	<!-- Required Privileges -->
 	<privilege>
-		<name>Form Entry</name>
-		<description>Allows user to access Form Entry pages/functions</description>
+		<name>Add New Lag Time Report</name>
+		<description>Ability to add New Lag Time Report</description>
 	</privilege>
-	 /Required Privileges -->
-
-
+	<privilege>
+		<name>Retire Report Setup</name>
+		<description>Ability to Retire Report Setup</description>
+	</privilege>
+	<privilege>
+		<name>Manage Report</name>
+		<description>Ability to View Report</description>
+	</privilege>
+	<privilege>
+		<name>Setup Report</name>
+		<description>Ability to Setup Report</description>
+	</privilege>
+	<privilege>
+		<name>Retire Report</name>
+		<description>Ability to retire report</description>
+	</privilege>
+	<privilege>
+		<name>Setup Lag Time Report</name>
+		<description>Ability to Setup Lag Time Report</description>
+	</privilege>
+	
 	<!-- Required Global Properties 
 	<globalProperty>
 		<property>@MODULE_ID@.someProperty</property>

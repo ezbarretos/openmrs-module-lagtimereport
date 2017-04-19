@@ -71,7 +71,7 @@
 	</h4>
 
 	<spring:hasBindErrors name="lagTimeReport">
-		<spring:message code="fix.error" />
+		<spring:message code="lagtimereport.error.general" />
 		<br />
 	</spring:hasBindErrors>
 	<form method="post">

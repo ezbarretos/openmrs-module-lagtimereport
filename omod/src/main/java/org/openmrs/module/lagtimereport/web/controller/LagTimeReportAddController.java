@@ -22,7 +22,7 @@ import org.openmrs.module.lagtimereport.LagTimeReportSetup;
 import org.openmrs.module.lagtimereport.propertyeditor.LagTimeReportEditor;
 import org.openmrs.module.lagtimereport.service.LagTimeReportService;
 import org.openmrs.module.lagtimereport.service.LagTimeReportSetupService;
-import org.openmrs.validator.ValidateUtil;
+import org.openmrs.module.lagtimereport.validation.LagTimeReportValidation;
 import org.openmrs.web.WebConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -126,12 +126,13 @@ public class LagTimeReportAddController {
 	        BindingResult result) throws Exception {
 		
 		HttpSession httpSession = request.getSession();
+		LagTimeReportValidation validator = new LagTimeReportValidation();
 		//if (Context.isAuthenticated()) {
-		ValidateUtil.validate(lagTimeReport, result);
+		validator.validate(lagTimeReport, result);
 		
-		/*if (result.hasErrors()) {
-			return null;
-		}*/
+		if (result.hasErrors()) {
+			return "redirect:addLagtimereport.form";
+		}
 		
 		//Set c = new HashSet();
 		Set<FormValue> formValues = new HashSet<FormValue>();

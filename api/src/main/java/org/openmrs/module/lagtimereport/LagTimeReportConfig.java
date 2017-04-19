@@ -17,5 +17,15 @@ import org.springframework.stereotype.Component;
 @Component("lagtimereport.LagTimeReportConfig")
 public class LagTimeReportConfig {
 	
-	public final static String MODULE_PRIVILEGE = "Lag Time Report Privilege";
+	public final static String PRIVILEGE_ADD_NEW_REPORT = "Add New Lag Time Report";
+	
+	public final static String PRIVILEGE_REPORT_RETIRE = "Retire Report Setup";
+	
+	public final static String PRIVILEGE_VIEW_REPORT = "Manage Report";
+	
+	public final static String PRIVILEGE_SETUP_REPORT = "Setup Report";
+	
+	public final static String PRIVILEGE_SETUP_RETIRE_REPORT = "Retire Report";
+	
+	public final static String PRIVILEGE_VIEW_SETUP_REPORT = "Setup Lag Time Report";
 }

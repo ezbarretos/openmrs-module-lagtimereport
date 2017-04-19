@@ -4,6 +4,8 @@
 
 <%@ include file="template/localMenu.jsp"%>
 
+<%@ taglib prefix="form" uri="/WEB-INF/taglibs/spring-form.tld" %>
+
 <openmrs:htmlInclude
 	file="${pageContext.request.contextPath}/moduleResources/lagtimereport/js/jquery-3.1.1.min.js" />
 <openmrs:htmlInclude
@@ -66,8 +68,10 @@
 		<b class="boxHeader"><spring:message code="lagtimereport.title" /></b>
 	</h4>
 
-	<spring:hasBindErrors name="lagTimeTeportSetup">
-		<spring:message code="fix.error" />
+ 	<spring:hasBindErrors name="lagTimeReportSetup">
+		<span class="error">
+		<spring:message code="lagtimereport.error.general"/>
+		</span>	
 		<br />
 	</spring:hasBindErrors>
 
@@ -76,24 +80,19 @@
 			<table>
 				<tr>
 					<td><spring:message code="general.name" /></td>
-					<td><spring:bind path="lagTimeTeportSetup.name">
+					<td><spring:bind path="lagTimeReportSetup.name">
 							<input type="text" name="name"
-								value="<c:out value="${status.value}"/>" size="35" />
-							<c:if test="${status.errorMessage != ''}">
-								<span class="error">${status.errorMessage}</span>
-							</c:if>
+								value="${status.value}" size="35" />
+								<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind></td>
 				</tr>
 				<tr>
 					<td valign="top"><spring:message code="general.description" /></td>
 					<td valign="top"><spring:bind
-							path="lagTimeTeportSetup.description">
+							path="lagTimeReportSetup.description">
 							<textarea name="description" rows="5" cols="40"
-								onkeypress="return forceMaxLength(this, 1024);"><c:out
-									value="${status.value}" /></textarea>
-							<c:if test="${status.errorMessage != ''}">
-								<span class="error">${status.errorMessage}</span>
-							</c:if>
+								onkeypress="return forceMaxLength(this, 1024);"></textarea>
+								<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind></td>
 				</tr>
 			</table>
@@ -110,7 +109,7 @@
 					varStatus="status">
 					<c:set var="formAlreadyExists" value="${false}" />
 					<c:if test="${(status.index - 1) > 0}">
-						<c:forEach var="lagtime" items="${lagTimeTeportSetup.forms}"
+						<c:forEach var="lagtime" items="${lagTimeReportSetup.forms}"
 							begin="0" end="${status.index - 1}" varStatus="inner">
 							<c:if test="${lagtime.formId == forms.formId}">
 								<tr>
