@@ -68,12 +68,18 @@
 		<b class="boxHeader"><spring:message code="lagtimereport.title" /></b>
 	</h4>
 
- 	<spring:hasBindErrors name="lagTimeReportSetup">
+<!--  	<spring:hasBindErrors name="lagTimeReportSetup">
 		<span class="error">
 		<spring:message code="lagtimereport.error.general"/>
 		</span>	
 		<br />
-	</spring:hasBindErrors>
+	</spring:hasBindErrors> -->
+	
+	<spring:hasBindErrors name="lagTimeReportSetup">
+        <c:forEach var="error" items="${errors.allErrors}">
+        <b><spring:message message="lagtimereport.error.general" /></b>
+        </c:forEach>
+    </spring:hasBindErrors>
 
 	<form method="post">
 		<fieldset>
